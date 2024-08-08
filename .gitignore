@@ -20,4 +20,4 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Ignore temp files and caches
-tmp
+# tmp
