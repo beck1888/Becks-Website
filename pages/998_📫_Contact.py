@@ -3,6 +3,8 @@ import streamlit as st # Web framework
 import asset_director # For asset management
 import json # For managing JSON data in the contact form
 import http.client, urllib # For sending HTTP requests to Pushover
+import hashlib # For generating hashes for the contact form
+import datetime # For date formatting
 
 # Configure assets
 src = asset_director.Asset("Contact", 998)
@@ -14,6 +16,27 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="expanded",
 )
+
+# Get the date
+def get_date_and_time():
+    """
+    Gets the current date and time as MM/DD/YYYY HH:MM:SS AM/PM
+    """
+    now = datetime.datetime.now()
+    date = now.strftime("%m/%d/%Y")
+    time = now.strftime("%I:%M:%S %p")
+    full_datetime_stamp = date + " " + time
+
+    return full_datetime_stamp
+
+# Get the SHA256 hash of the contact form
+def get_sha256_hash(subject, message, date_and_time):
+    """
+    Gets the SHA256 hash of the contact form
+    """
+    sha256_hash = hashlib.sha256((subject + message + date_and_time).encode("utf-8")).hexdigest()
+
+    return sha256_hash
 
 # Communication with Pushover
 def send_pushover_notification(subject, message, is_urgent):
@@ -67,6 +90,8 @@ with st.form(key="contact_form", clear_on_submit=True):
 
         # Create the JSON data
         data = {
+            "date_and_time": get_date_and_time(),
+            "message_hash": get_sha256_hash(subject, message, get_date_and_time()),
             "name": name,
             "email": email,
             "subject": subject,

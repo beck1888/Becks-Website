@@ -1,50 +1,12 @@
 [
     {
-        "name": "Beck Orion",
-        "email": "beckorion@gmail.com",
-        "subject": "Cool Site!",
+        "date_and_time": "08/08/2024 02:28:15 PM",
+        "message_hash": "eb4e8a3b48b1c6231e95ab5693c9eb4b4585993a7333087e074844d7bbfc4427",
+        "name": "Beck",
+        "email": "",
+        "subject": "broken",
         "message_type": "Bug Report",
-        "message": "Niceeeee......",
+        "message": "d",
         "urgent": false
-    },
-    {
-        "name": "End User",
-        "email": "",
-        "subject": "I want it to be faster",
-        "message_type": "Feature Request",
-        "message": "bla bla blq bla ",
-        "urgent": false
-    },
-    {
-        "name": "f",
-        "email": "",
-        "subject": "qwfe",
-        "message_type": "Bug Report",
-        "message": "qwfe",
-        "urgent": false
-    },
-    {
-        "name": "bobby",
-        "email": "",
-        "subject": "g;kjb",
-        "message_type": "Bug Report",
-        "message": "nnihl",
-        "urgent": true
-    },
-    {
-        "name": "",
-        "email": "",
-        "subject": "",
-        "message_type": null,
-        "message": "",
-        "urgent": false
-    },
-    {
-        "name": "",
-        "email": "",
-        "subject": "",
-        "message_type": null,
-        "message": "",
-        "urgent": true
     }
 ]
