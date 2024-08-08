@@ -1,5 +1,5 @@
-# Ignore Streamlit directory
-.streamlit/
+# Ignore Streamlit secrets only
+.streamlit/secrets.toml
 
 # Ignore virtual environment directories
 venv/
