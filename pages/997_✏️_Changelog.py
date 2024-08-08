@@ -8,7 +8,7 @@ import time # For adding a delay to prevent spamming the API
 from random import randint # For generating random numbers for the loading time
 
 # Configure assets
-src = asset_director.Asset("Changelog", 998)
+src = asset_director.Asset("Changelog", 997)
 
 # Configure the Streamlit app
 st.set_page_config(
