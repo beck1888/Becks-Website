@@ -1,4 +1,8 @@
-# [Beck's Website](http://beck.asuscomm.com/)
+# README for [Beck's Website](http://beck.asuscomm.com/)
+
+[GitHub Repo for this project](https://github.com/beck1888/Becks-Website)
+
+---
 
 ## Table of Contents
 - [About](#about)
@@ -13,7 +17,7 @@ This is my side project, hosted on a RaspberryPi that's currently sitting on my 
 
 At some point, I intend to write more formal documentation, a roadmap, and a to-do; but right now I'm focusing more on development than documentation. Also, I've tried to follow Python best practices and proper code formatting, but I'm sure I could always do a better job!
 
-If you want to help me with this, or anything else, I would really appreciate it! Please feel free to open an issue, PR, or fill out the contact form on the site.
+If you want to help me with this, or anything else, I would really appreciate it! Please feel free to open an issue, PR, or fill out the contact form on the site. Also, I'm new to writing readmes (can you tell)? I pretty much just looked around on different GitHub repos and included aspects of their READMEs that seem relevant on this one. If this README is overkill or to harsh or formatted incorrectly or missing something or really has any issues or anything of that sort, please feel free to help me fix it. Like I said, this is my first time writing and deploying a project like this, so I'm sure I have plenty to learn, and any help in that direction would be greatly appreciated!
 
 ### Funding
 This project is completely self funded. Most of it was free (aka I already owned the hardware). My only real operating expense are API keys. Right now I have $5.00 loaded onto the OpenAI api set up to not auto-reload, so if errors with api keys come up that is probably the cause. I can fund it more, but I'm trying to keep costs low because this is a side project.
@@ -74,13 +78,14 @@ Follow these steps to set up the project on your own machine (Mac/Linux; similar
 
 Protect your API keys by adding a password screen if deploying publicly via the [Streamlit Community Cloud](https://streamlit.io/cloud) or another hosting method (e.g., RaspberryPi and port forwarding as I’m doing).
 
-License
+## License
 
 You are permitted to copy, modify, and distribute this code for any purpose, including commercial use, with or without attribution. If you wish to provide credit, please link to my GitHub or this repository.
 
 Prohibited Actions:
 
 - Spamming this page.
+- Spamming any and all APIs including, but not limited to, GitHub and OpenAI APIs
 - Sending malicious requests to this page.
 - Attempting to compromise or disrupt the functionality of this page.
 - Misusing this page in any manner.
@@ -115,4 +120,3 @@ I have not documented or verified the copyright status of any materials used. Th
 ---
 
 Enjoy!
-- [Beck](https://github.com/beck1888)

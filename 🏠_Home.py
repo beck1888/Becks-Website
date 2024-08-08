@@ -16,12 +16,12 @@ st.set_page_config(
 )
 
 # Page content
-st.title("Beck's Site")
-st.text("This page is still under construction, so please see the README below for now...")
+# st.title("Beck's Site")
+# st.text("This page is still under construction, so please see the README below for now...")
 
-st.markdown("""<a href="https://github.com/beck1888/Becks-Website" target="_blank"><u>https://github.com/beck1888/Becks-Website</u></a>""", unsafe_allow_html=True)
+# st.markdown("""<a href="https://github.com/beck1888/Becks-Website" target="_blank"><u>https://github.com/beck1888/Becks-Website</u></a>""", unsafe_allow_html=True)
 
-st.divider()
+# st.divider()
 
 with open("README.md", "r") as f:
     st.markdown(f.read())
