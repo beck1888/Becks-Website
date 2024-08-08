@@ -17,7 +17,7 @@ st.set_page_config(
 
 # Page content
 st.title("Beck's Site")
-st.warning("This page is still under construction, so please see the README below for now...")
+st.text("This page is still under construction, so please see the README below for now...")
 
 st.divider()
 
