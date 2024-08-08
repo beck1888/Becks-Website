@@ -2,7 +2,7 @@ import streamlit as st
 import asset_director
 import streamlit_lottie
 
-src = asset_director.Asset("Admin", 998)
+src = asset_director.Asset("Contact", 998)
 loading = src.under_construction()
 
 st.set_page_config(
