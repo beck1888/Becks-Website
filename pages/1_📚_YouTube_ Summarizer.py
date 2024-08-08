@@ -12,7 +12,7 @@ src = Asset("YouTube Summarizer", 1)
 # Configure the Streamlit app
 st.set_page_config(page_title=src.tab_title(),
     page_icon=src.favicon(),
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="expanded")
 
 if "phase" not in st.session_state:

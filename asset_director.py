@@ -1,4 +1,5 @@
 import json # For loading the Lottie animation's JSON data and other JSON data
+import os # For cache management
 
 class Asset:
     """Initializes src = Asset()... because 'asset' is too similar to the 'assert' keyword in Python."""
@@ -40,3 +41,17 @@ class Asset:
         # Load the Lottie animation
         with open("assets/shared/under_construction.json", 'r') as f:
             return ["<h1 style='text-align:center;'>Under Construction</h1>", json.load(f)]
+        
+    def fetch_local_json(self, file_name: str) -> dict:
+        """
+        Returns the JSON data for the specified file name under the page's dedicated asset folder.
+        """
+        with open(f"{self.asset_folder}/{file_name}.json", 'r') as f:
+            return json.load(f)
+        
+    def clear_cache(self) -> None:
+        """
+        Clears the cache (deletes all files in the 'tmp' folder).
+        """
+        for file in os.listdir("tmp"):
+            os.remove(f"tmp/{file}")
