@@ -15,6 +15,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Hide the Streamlit UI
+for config in src.clear_st_ui():
+    st.markdown(config, unsafe_allow_html=True)
+
 # Page content
 # st.title("Beck's Site")
 # st.text("This page is still under construction, so please see the README below for now...")

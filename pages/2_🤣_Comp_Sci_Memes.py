@@ -18,6 +18,10 @@ st.set_page_config(
     layout="wide", # This page will be wide because the image needs room to display
     initial_sidebar_state="expanded")
 
+# Hide the Streamlit UI
+for config in src.clear_st_ui():
+    st.markdown(config, unsafe_allow_html=True)
+
 # Function for getting a meme
 def get_a_meme():
     # Get the json data

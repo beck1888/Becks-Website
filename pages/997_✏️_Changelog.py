@@ -18,6 +18,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Hide the Streamlit UI
+for config in src.clear_st_ui():
+    st.markdown(config, unsafe_allow_html=True)
+
 # Function to get all commit messages from the repo
 def get_commit_messages(repo_url):
     owner_repo = "/".join(repo_url.strip("/").split("/")[-2:])

@@ -17,6 +17,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Hide the Streamlit UI
+for config in src.clear_st_ui():
+    st.markdown(config, unsafe_allow_html=True)
+
 # Get the date
 def get_date_and_time():
     """

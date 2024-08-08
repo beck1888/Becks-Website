@@ -15,6 +15,10 @@ st.set_page_config(page_title=src.tab_title(),
     layout="centered",
     initial_sidebar_state="expanded")
 
+# Hide the Streamlit UI
+for config in src.clear_st_ui():
+    st.markdown(config, unsafe_allow_html=True)
+
 if "phase" not in st.session_state:
     st.session_state["phase"] = 0
 

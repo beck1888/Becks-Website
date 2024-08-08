@@ -14,6 +14,13 @@ class Asset:
         self.page_ID = str(page_ID) # Force the conversion to a string
         self.asset_folder = f"assets/page_{str(page_ID)}"
 
+    def clear_st_ui(self) -> str:
+        """
+        Returns the code needed to run to clear the Streamlit UI.
+        Make sure to run it with streamlit markdown and allow unsafe html!
+        """
+        return ['\n<style>\n    #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 0rem;}\n</style>\n', '', '\n<style>div[data-testid="stToolbar"] { display: none;}</style>\n']
+
     def favicon(self) -> str:
         """
         Returns the path to the favicon of the page.
