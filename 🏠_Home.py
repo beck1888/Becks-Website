@@ -18,6 +18,7 @@ st.set_page_config(
 # Page content
 st.title("Beck's Site")
 st.text("This page is still under construction, so please see the README below for now...")
+st.page_link(page="https://github.com/beck1888/Becks-Website",label="GitHub")
 
 st.divider()
 
