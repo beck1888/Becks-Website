@@ -111,7 +111,7 @@ if st.session_state["auth"] is True:
     with column_1_row_2:
         # THIS ONLY WORKS ON THE PROD SERVER
         if st.button("🧹 Clear Cache [BROKEN]", key="clear_cache", disabled=False, use_container_width=True): # This is not a destructive action so it can stay enabled
-            st.toast("No thanks") # Not yet implemented
+            st.toast("Command broken - you need to manually clear the cache") # Not yet implemented
             # # Cache folders: cache/memes and cache/YT
             # folder_endpoints = ["memes", "YT"]
 
