@@ -30,6 +30,11 @@ st.set_page_config(
 for config in src.clear_st_ui():
     st.markdown(config, unsafe_allow_html=True)
 
+# Add a little bit of vertical
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+
+
 # Function for getting a meme
 def get_a_meme():
     # Get the json data
