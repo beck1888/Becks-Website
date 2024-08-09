@@ -78,18 +78,27 @@ if load_commits_go:
     # Remove the button
     page_loader_button.empty()
 
-    # Use a spinner to show that the changelog is loading
-    with st.spinner("Loading..."): # Discourage spamming the API
-        time.sleep(randint(3, 7)) # Add a random delay to prevent spamming the API
-        try:
-            commits = get_commit_messages("https://github.com/beck1888/Becks-Website")
-            # Go through each commit
-        except requests.exceptions.RequestException as e:
-            st.error(f"An error occurred: {e}")  # Display error message for HTTP errors
-        except Exception as e:
-            st.error(f"An unexpected error occurred: {e}")
+    try:
+        commits = get_commit_messages("https://github.com/beck1888/Becks-Website")
+        # Go through each commit
+    except requests.exceptions.RequestException as e:
+        st.error(f"An error occurred: {e}")  # Display error message for HTTP errors
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
 
-    # Initialize the counter
+    # Add a delay to prevent spamming the API
+    bar_hold = st.empty()
+    bar = bar_hold.progress(0, text="Loading version history...")
+
+    for i in range(100):
+        time.sleep(randint(1, 5) / 100)
+        bar.progress((i + 1)/100, text="Loading version history...")
+    time.sleep(0.5)
+
+    # Close the progress bar
+    bar_hold.empty()
+
+    # Initialize the counter for the number of commits
     commit_count = 0
 
     # Display the changelog

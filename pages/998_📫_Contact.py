@@ -5,6 +5,7 @@ import json # For managing JSON data in the contact form
 import http.client, urllib # For sending HTTP requests to Pushover
 import hashlib # For generating hashes for the contact form
 import datetime # For date formatting
+import time # For adding a delay to prevent spam
 
 # Configure assets
 src = asset_director.Asset("Contact", 998)
@@ -91,29 +92,35 @@ with st.form(key="contact_form", clear_on_submit=True):
 
     if submit_button:
         # Make sure all required fields are filled
+        if name != "" and subject != "" and message != "" and message_type != None:
+            # Create the JSON data
+            data = {
+                "date_and_time": get_date_and_time(),
+                "message_hash": get_sha256_hash(subject, message, get_date_and_time()),
+                "name": name,
+                "email": email,
+                "subject": subject,
+                "message_type": message_type,
+                "message": message,
+                "urgent": urgent
+            }
 
-        # Create the JSON data
-        data = {
-            "date_and_time": get_date_and_time(),
-            "message_hash": get_sha256_hash(subject, message, get_date_and_time()),
-            "name": name,
-            "email": email,
-            "subject": subject,
-            "message_type": message_type,
-            "message": message,
-            "urgent": urgent
-        }
+            # Write the JSON data to the file
+            with open("contact_form_responses.json", "r") as f:
+                responses = json.load(f)
 
-        # Write the JSON data to the file
-        with open("contact_form_responses.json", "r") as f:
-            responses = json.load(f)
+            responses.append(data)
 
-        responses.append(data)
+            with open("contact_form_responses.json", "w") as f:
+                json.dump(responses, f, indent=4)
 
-        with open("contact_form_responses.json", "w") as f:
-            json.dump(responses, f, indent=4)
+            with st.spinner("Sending..."): # Discourage spamming the API
+                time.sleep(6) # Add a delay to prevent spamming the API
 
-        # Send Pushover notification
-        send_pushover_notification(subject, message, urgent)
+            # Send Pushover notification
+            send_pushover_notification(subject, message, urgent)
 
-        st.info(f"Response received! Thank you for contacting me, {name}!")
+            st.info(f"Response received! Thank you for contacting me, {name}!")
+
+        else:
+            st.error("Please fill out all required fields before submitting.")

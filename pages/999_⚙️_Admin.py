@@ -111,14 +111,15 @@ if st.session_state["auth"] is True:
     with column_1_row_2:
         # THIS ONLY WORKS ON THE PROD SERVER
         if st.button("🧹 Clear Cache [BROKEN]", key="clear_cache", disabled=False, use_container_width=True): # This is not a destructive action so it can stay enabled
-            # Cache folders: cache/memes and cache/YT
-            folder_endpoints = ["memes", "YT"]
+            st.toast("No thanks") # Not yet implemented
+            # # Cache folders: cache/memes and cache/YT
+            # folder_endpoints = ["memes", "YT"]
 
-            for folder_endpoint in folder_endpoints:
-                # Keep the folder BUT remove all its contents
-                subprocess.Popen(["bash", f"rm -rf /home/admin/Documents/Becks-Website/cache/{folder_endpoint}/*"])
+            # for folder_endpoint in folder_endpoints:
+            #     # Keep the folder BUT remove all its contents
+            #     subprocess.Popen(["bash", f"rm -rf /home/admin/Documents/Becks-Website/cache/{folder_endpoint}/*"])
 
-            st.toast("Cache cleared", icon="🗑️")
+            # st.toast("Cache cleared", icon="🗑️")
 
     with column_2_row_2:
         st.button("🌀 Refresh", key="refresh", use_container_width=True, on_click=st.rerun)
