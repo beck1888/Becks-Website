@@ -62,16 +62,12 @@ def summarize(transcript: str, use_emojis: bool, mention_sponsors: bool) -> str:
         sponsor_flag = "Do not mention anything about sponsors in the summary, even if the transcript mentions them."
 
 
-    stream = client.chat.completions.create(
+    response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "system", "content": f"Summarize this Youtube video. Crate multiple sections for the key points. Use markdown formatting. {emoji_flag} {sponsor_flag}"},
                   {"role": "user", "content": transcript}],
-        stream=True,
-    )
-    response = ""
-    for chunk in stream:
-        if chunk.choices[0].delta.content is not None:
-            response += chunk.choices[0].delta.content
+        stream=False,
+    ).choices[0].message.content
 
     return response
 

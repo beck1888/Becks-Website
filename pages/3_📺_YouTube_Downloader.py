@@ -8,7 +8,7 @@ from streamlit_lottie import st_lottie  # For rendering the Lottie animation
 
 
 # Configure assets
-src = Asset("YouTube Downloader", 2)
+src = Asset("YouTube Downloader", 3)
 
 # Configure the Streamlit app
 st.set_page_config(page_title=src.tab_title(),
