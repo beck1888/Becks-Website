@@ -53,6 +53,7 @@ class Asset:
         """
         Clears all caches.
         """
+        raise PendingDeprecationWarning("This function does not work")
         # Cache folders: cache/memes and cache/YT
         folder_endpoints = ["memes", "YT"]
 

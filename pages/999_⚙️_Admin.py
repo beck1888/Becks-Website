@@ -134,6 +134,11 @@ if st.session_state["auth"] is True:
             st.session_state["sudo_mode"] = True
             st.rerun()
 
+    with column_1_row_3:
+        if st.button("❌ Stop SUDO", key="switch_to_user", use_container_width=True):
+            st.session_state["sudo_mode"] = False
+            st.rerun()
+
     # Notes
     with st.container(border=True):
         st.markdown("**Notes:**")
@@ -142,3 +147,4 @@ if st.session_state["auth"] is True:
         st.markdown("- Clear cache will only work on the production server.")
         st.markdown("- Clear the cache from time to time for better performance.")
         st.markdown("- Destructive commands will shutdown the server, and it can only be restarted manually or by another device on the same network.")
+        st.markdown("- Install packages on the server's global environment by passing the --break-system-packages flag to pip install package.")

@@ -19,5 +19,6 @@ __pycache__/
 # Ignore Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Ignore temp files and caches
-# tmp
+# Ignore cache files but not folder structure
+cache/memes/*
+cache/YT/*
