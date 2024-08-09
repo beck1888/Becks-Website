@@ -16,8 +16,11 @@ st.set_page_config(page_title=src.tab_title(),
     initial_sidebar_state="expanded")
 
 # # Hide the Streamlit UI
-# for config in src.clear_st_ui():
-#     st.markdown(config, unsafe_allow_html=True)
+for config in src.clear_st_ui():
+    st.markdown(config, unsafe_allow_html=True)
+
+# Add a little bit of vertical space so the html h1 tag doesn't get cutoff
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Configure the session state
 if "phase" not in st.session_state:
