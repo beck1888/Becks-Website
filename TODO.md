@@ -17,3 +17,4 @@
 - [ ] Use advance multi page app method to create an ordered sidebar and then customize sidebar on each page
 - [ ] Get rid of Streamlit top bar UI
 - [ ] Rearrange the buttons in the admin portal to make more sense
+- [ ] Add a message viewer to the admin portal

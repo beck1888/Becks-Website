@@ -5,11 +5,19 @@ import json # Read the master json file with all the memes
 import asset_director # For asset management
 import hashlib # For generating SHA256 hashes of the image urls
 import requests # For downloading the images
+import os # For cache management
 
 
 # Configure assets
-src = asset_director.Asset("Comp Sci Memes", 3)
-src.clear_cache() # Clear the cache on page load
+src = asset_director.Asset("Comp Sci Memes", 100)
+# src.clear_cache() # Clear the cache on page load
+
+# Clear the cache on page load
+cached_data_dir = "cache/memes"
+# Remove all files in the directory but keep the directory
+for file in os.listdir(cached_data_dir):
+    if file != cached_data_dir:
+        os.remove(os.path.join(cached_data_dir, file))
 
 # Page setup
 st.set_page_config(
@@ -58,9 +66,12 @@ with col1:
     # Short the hash
     short_hash = sha256_hash[0:6]
 
-    # Cache the image
-    with open(f"tmp/{short_hash}.png", "wb") as f:
-        f.write(requests.get(found_meme_url).content)
+    # Try to cache the image
+    try:
+        with open(f"cache/memes/{short_hash}.png", "wb") as f:
+            f.write(requests.get(found_meme_url).content)
+    except:
+        pass
 
 # Show the page controls column
 with col2:
