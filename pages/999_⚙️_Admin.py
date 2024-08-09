@@ -125,7 +125,7 @@ if st.session_state["auth"] is True:
         st.markdown("- Destructive commands will shutdown the server, and it can only be restarted manually or by another device on the same network.")
 
     # Add some vertical space
-    with st.container(border=False, height=20):
+    with st.container(border=False):
         pass
 
     # Refresh page button (that does not logout the user)
