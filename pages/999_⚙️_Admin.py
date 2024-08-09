@@ -127,6 +127,11 @@ if st.session_state["auth"] is True:
             st.session_state["sudo_mode"] = False
             st.rerun()
 
+    with column_4_row_2:
+        if st.button("👤 Switch to SUDO", key="switch_to_sudo", use_container_width=True):
+            st.session_state["sudo_mode"] = True
+            st.rerun()
+
     # Notes
     with st.container(border=True):
         st.markdown("**Notes:**")
