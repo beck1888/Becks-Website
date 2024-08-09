@@ -77,35 +77,38 @@ if st.session_state["auth"] is True:
 
     # Update server button
     with column_1_row_1:
-        if st.button("Update Server", key="update_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+        if st.button("🔼 Update Server", key="update_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
             st.toast("Starting update in 5 seconds. Refresh the page if it doesn't automatically refresh in a bit.")
             time.sleep(5)
             subprocess.Popen(["bash", "/home/admin/Documents/Becks-Website/assets/server_scripts/site-update.sh"])
 
     # Reboot server button
     with column_2_row_1:
-        if st.button("Reboot Server", key="reboot_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+        if st.button("🔄 Reboot Server", key="reboot_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
             st.toast("Rebooting in 5 seconds. Refresh the page if it doesn't automatically refresh in a bit.")
             time.sleep(5)
             subprocess.Popen(["bash", "sudo reboot"])
 
     # Shutdown server button
     with column_3_row_1:
-        if st.button("Shutdown Server", key="shutdown_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+        if st.button("🔌 Shutdown Server", key="shutdown_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
             st.toast("Shutting down in 5 seconds. The page will no longer be available.")
             time.sleep(5)
             subprocess.Popen(["bash", "pkill -f streamlit"])
 
     # Delete secrets file
     with column_4_row_1:
-        if st.button("Delete Secrets File", key="delete_secrets_file", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+        if st.button("🗑️ Delete Secrets File", key="delete_secrets_file", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
             st.toast("Deleting secrets file. Make sure to replace it manually.")
             subprocess.Popen(["bash", "rm /home/admin/Documents/Becks-Website/.streamlit/secrets.toml"])
+
+
+    ## Non sudo buttons below
 
     # Clear cache button
     with column_1_row_2:
         # THIS ONLY WORKS ON THE PROD SERVER
-        if st.button("Clear Cache", key="clear_cache", disabled=False, use_container_width=True): # This is not a destructive action so it can stay enabled
+        if st.button("🧹 Clear Cache", key="clear_cache", disabled=False, use_container_width=True): # This is not a destructive action so it can stay enabled
             # Cache folders: cache/memes and cache/YT
             folder_endpoints = ["memes", "YT"]
 
@@ -116,7 +119,13 @@ if st.session_state["auth"] is True:
             st.toast("Cache cleared", icon="🗑️")
 
     with column_2_row_2:
-        st.button("Refresh", key="refresh", use_container_width=True, on_click=st.rerun)
+        st.button("🌀 Refresh", key="refresh", use_container_width=True, on_click=st.rerun)
+
+    with column_3_row_2:
+        if st.button("🔒 Logoff", key="logoff", use_container_width=True):
+            st.session_state["auth"] = False
+            st.session_state["sudo_mode"] = False
+            st.rerun()
 
     # Notes
     with st.container(border=True):
