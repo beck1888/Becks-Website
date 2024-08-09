@@ -78,23 +78,23 @@ if st.session_state["auth"] is True:
     # Update server button
     with column_1_row_1:
         if st.button("🔼 Update Server", key="update_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
-            st.toast("Starting update in 5 seconds. Refresh the page if it doesn't automatically refresh in a bit.")
-            time.sleep(5)
+            # st.toast("Starting update in 5 seconds. Refresh the page if it doesn't automatically refresh in a bit.")
+            # time.sleep(5)
             subprocess.Popen(["bash", "/home/admin/Documents/Becks-Website/assets/server_scripts/site-update.sh"])
 
     # Reboot server button
     with column_2_row_1:
         if st.button("🔄 Reboot Server", key="reboot_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
-            st.toast("Rebooting in 5 seconds. Refresh the page if it doesn't automatically refresh in a bit.")
-            time.sleep(5)
+            # st.toast("Rebooting in 5 seconds. Refresh the page if it doesn't automatically refresh in a bit.")
+            # time.sleep(5)
             subprocess.Popen(["bash", "sudo reboot"])
 
     # Shutdown server button
     with column_3_row_1:
         if st.button("🔌 Shutdown Server", key="shutdown_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
-            st.toast("Shutting down in 5 seconds. The page will no longer be available.")
-            time.sleep(5)
-            subprocess.Popen(["bash", "pkill -f streamlit"])
+            # st.toast("Shutting down in 5 seconds. The page will no longer be available.")
+            # time.sleep(5)
+            subprocess.Popen(["bash", "sudo pkill -f streamlit"])
 
     # Delete secrets file
     with column_4_row_1:
