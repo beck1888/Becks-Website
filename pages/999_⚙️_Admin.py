@@ -115,18 +115,14 @@ if st.session_state["auth"] is True:
 
             st.toast("Cache cleared", icon="🗑️")
 
+    with column_2_row_2:
+        st.button("Refresh", key="refresh", use_container_width=True, on_click=st.rerun)
+
     # Notes
-    with st.container(border=True, height=50):
+    with st.container(border=True):
         st.markdown("**Notes:**")
         st.markdown("- Make sure to replace the secrets file manually.")
         st.markdown("- Make sure to install new packages manually.")
         st.markdown("- Clear cache will only work on the production server.")
         st.markdown("- Clear the cache from time to time for better performance.")
         st.markdown("- Destructive commands will shutdown the server, and it can only be restarted manually or by another device on the same network.")
-
-    # Add some vertical space
-    with st.container(border=False):
-        pass
-
-    # Refresh page button (that does not logout the user)
-    st.button("Refresh Page", key="refresh_page_no_logout", use_container_width=True)
