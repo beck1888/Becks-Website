@@ -1,7 +1,7 @@
 # Import necessary libraries
 import streamlit as st
 import asset_director
-import os
+import subprocess
 
 # Configure assets
 src = asset_director.Asset("Admin", 999)
@@ -65,9 +65,10 @@ if st.session_state["auth"] is True:
     # Update server button
     if st.button("Update Server", key="update_server", disabled=st.session_state["block_destructive_actions"]):
         st.toast("Updating server...")
-        st.toast("Make sure to refresh in a minute!")
-        st.toast("Button broken", icon="❌")
-        st.toast("Use manual update script from server", icon="🖥️")
+        subprocess.Popen(["bash", "/home/admin/Documents/Becks-Website/assets/server_scripts/site-update.sh"])
+        # st.toast("Make sure to refresh in a minute!")
+        # st.toast("Button broken", icon="❌")
+        # st.toast("Use manual update script from server", icon="🖥️")
         # os.system("~/Documents/update_becks_website.sh")
     st.markdown("""<p style='color:orange;'>This button will only work on the server, not in a development environment.</p>""", unsafe_allow_html=True)
     st.markdown("""<p style='color:red;'>If you've updated, added, or changed any secrets, you will have to add those manually.</p>""", unsafe_allow_html=True)
