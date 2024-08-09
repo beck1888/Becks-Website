@@ -61,6 +61,7 @@ if st.session_state["auth"] is True:
         st.text("Standard mode")
     st.divider()
 
+    st.text("If update 22 works, you will see this text.")
 
     # Update server button
     if st.button("Update Server", key="update_server", disabled=st.session_state["block_destructive_actions"]):
