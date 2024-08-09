@@ -2,7 +2,7 @@
 import os  # For cache management
 import ssl  # For downloading YouTube videos with SSL certificates
 # from pytube import YouTube  # For downloading YouTube videos
-import yt_dlp
+# import yt_dlp
 import streamlit as st  # Web framework
 from asset_director import Asset  # For asset management
 from streamlit_lottie import st_lottie  # For rendering the Lottie animation

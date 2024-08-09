@@ -78,7 +78,7 @@ def summarize(transcript: str, use_emojis: bool, mention_sponsors: bool) -> str:
 # Streamlit app
 if st.session_state["phase"] == 0:
     # Preload the Lottie animation
-    st.session_state["animation_data"] = src.load_lottie_animation_data()
+    st.session_state["animation_data"] = src.fetch_local_json("loader")
 
     st.title("YouTube Summarizer")
 
