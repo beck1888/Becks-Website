@@ -3,6 +3,7 @@ annotated-types==0.7.0
 anyio==4.4.0
 attrs==24.2.0
 blinker==1.8.2
+Brotli==1.1.0
 cachetools==5.4.0
 certifi==2024.7.4
 charset-normalizer==3.3.2
@@ -21,6 +22,7 @@ jsonschema-specifications==2023.12.1
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 mdurl==0.1.2
+mutagen==1.47.0
 numpy==2.0.1
 openai==1.40.0
 packaging==24.1
@@ -28,11 +30,13 @@ pandas==2.2.2
 pillow==10.4.0
 protobuf==5.27.3
 pyarrow==17.0.0
+pycryptodomex==3.20.0
 pydantic==2.8.2
 pydantic_core==2.20.1
 pydeck==0.9.1
 Pygments==2.18.0
 python-dateutil==2.9.0.post0
+pytube==15.0.0
 pytz==2024.1
 referencing==0.35.1
 requests==2.32.3
@@ -52,4 +56,6 @@ typing_extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.2
 watchdog==4.0.1
+websockets==12.0
 youtube-transcript-api==0.6.2
+yt-dlp==2024.8.6

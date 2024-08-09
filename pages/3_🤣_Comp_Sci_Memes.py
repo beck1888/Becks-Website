@@ -8,7 +8,7 @@ import requests # For downloading the images
 
 
 # Configure assets
-src = asset_director.Asset("Comp Sci Memes", 2)
+src = asset_director.Asset("Comp Sci Memes", 3)
 src.clear_cache() # Clear the cache on page load
 
 # Page setup
@@ -75,7 +75,7 @@ with col2:
     # Show the download button
     st.download_button(
         label="📥 Download and refresh",
-        data=open(f"tmp/{short_hash}.png", "rb").read(),
+        data=open(f"cache/memes/{short_hash}.png", "rb").read(),
         file_name=f"{short_hash}.png",
         mime="image/png",
         use_container_width=True

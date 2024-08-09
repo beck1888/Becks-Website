@@ -102,6 +102,28 @@ if st.session_state["auth"] is True:
             st.toast("Deleting secrets file. Make sure to replace it manually.")
             subprocess.Popen(["bash", "rm /home/admin/Documents/Becks-Website/.streamlit/secrets.toml"])
 
+    # Clear cache button
+    with column_1_row_2:
+        # THIS ONLY WORKS ON THE PROD SERVER
+        if st.button("Clear Cache", key="clear_cache", disabled=False, use_container_width=True): # This is not a destructive action so it can stay enabled
+            # Cache folders: cache/memes and cache/YT
+            folder_endpoints = ["memes", "YT"]
+
+            for folder_endpoint in folder_endpoints:
+                # Keep the folder BUT remove all its contents
+                subprocess.Popen(["bash", f"rm -rf /home/admin/Documents/Becks-Website/cache/{folder_endpoint}/*"])
+
+            st.toast("Cache cleared", icon="🗑️")
+
+    # Notes
+    with st.container(border=True, height=50):
+        st.markdown("**Notes:**")
+        st.markdown("- Make sure to replace the secrets file manually.")
+        st.markdown("- Make sure to install new packages manually.")
+        st.markdown("- Clear cache will only work on the production server.")
+        st.markdown("- Clear the cache from time to time for better performance.")
+        st.markdown("- Destructive commands will shutdown the server, and it can only be restarted manually or by another device on the same network.")
+
     # Add some vertical space
     with st.container(border=False, height=20):
         pass

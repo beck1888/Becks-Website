@@ -1,5 +1,5 @@
 import json # For loading the Lottie animation's JSON data and other JSON data
-import os # For cache management
+import subprocess # For cache management
 
 class Asset:
     """Initializes src = Asset()... because 'asset' is too similar to the 'assert' keyword in Python."""
@@ -33,14 +33,7 @@ class Asset:
         """
         title = "Beck's Site | " + self.page_name
         return title
-    
-    def load_lottie_animation_data(self) -> dict: # Returns the JSON data for the Lottie animation
-        """
-        Returns the path to the Lottie animation's JSON data.
-        """
-        with open(f"{self.asset_folder}/lottie.json", 'r') as f:
-            return json.load(f)
-    
+
     def under_construction(self) -> list:
         """
         Returns the html for the construction message and the data for the under construction sign.
@@ -53,12 +46,19 @@ class Asset:
         """
         Returns the JSON data for the specified file name under the page's dedicated asset folder.
         """
-        with open(f"{self.asset_folder}/{file_name}.json", 'r') as f:
+        with open(f"{self.asset_folder}/{file_name.removesuffix('.json')}.json", 'r') as f:
             return json.load(f)
         
     def clear_cache(self) -> None:
         """
-        Clears the cache (deletes all files in the 'tmp' folder).
+        Clears all caches.
         """
-        for file in os.listdir("tmp"):
-            os.remove(f"tmp/{file}")
+        # Cache folders: cache/memes and cache/YT
+        folder_endpoints = ["memes", "YT"]
+
+        for folder_endpoint in folder_endpoints:
+            # Keep the folder BUT remove all its contents
+            try:
+                subprocess.Popen(["bash", f"rm -rf /home/admin/Documents/Becks-Website/cache/{folder_endpoint}/*"])
+            except:
+                pass # Ignore the error if the folder doesn't exist (because on the dev platform it doesn't - different file structure)
