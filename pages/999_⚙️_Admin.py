@@ -4,6 +4,7 @@ import asset_director # For asset management
 import subprocess # For running commands
 import time # For adding a delay so the toast messages can be read before running the action
 import http.client, urllib # For sending HTTP requests to Pushover
+import os
 
 # Configure assets
 src = asset_director.Asset("Admin", 999)
@@ -95,6 +96,7 @@ if st.session_state["auth"] is True:
             # st.toast("Shutting down in 5 seconds. The page will no longer be available.")
             # time.sleep(5)
             subprocess.Popen(["bash", "sudo pkill -f streamlit"])
+            os.system("sudo pkill -f streamlit")
 
     # Delete secrets file
     with column_4_row_1:
