@@ -1,7 +1,9 @@
 # Import necessary libraries
-import streamlit as st
-import asset_director
-import subprocess
+import streamlit as st # Web framework
+import asset_director # For asset management
+import subprocess # For running commands
+import time # For adding a delay so the toast messages can be read before running the action
+import http.client, urllib # For sending HTTP requests to Pushover
 
 # Configure assets
 src = asset_director.Asset("Admin", 999)
@@ -10,8 +12,8 @@ src = asset_director.Asset("Admin", 999)
 # Configure the Streamlit app
 st.set_page_config(page_title=src.tab_title(),
     page_icon=src.favicon(),
-    layout="centered",
-    initial_sidebar_state="expanded")
+    layout="wide", # This page needs to be wide because there are a lot of buttons and text to display
+    initial_sidebar_state="collapsed") # Hide the sidebar to give more room for the admin UI
 
 # Hide the Streamlit UI
 for config in src.clear_st_ui():
@@ -41,7 +43,7 @@ if st.session_state["auth"] is False:
         sudo_mode = st.checkbox("Sudo Mode", key="sudo_mode_checkbox", value=False)
 
         login_button = st.form_submit_button(label="Login")
-        st.markdown("*You might have to click the password field to get autofill to show up*")
+        st.markdown("*If you are using Chrome's password manager, you might have to click on the password field first to get autofill to show up.*")
 
         if login_button:
             if username == st.secrets["ADMIN_USERNAME"] and password == st.secrets["ADMIN_PASSWORD"]:
@@ -56,20 +58,53 @@ if st.session_state["auth"] is False:
 if st.session_state["auth"] is True:
     # Header
     if st.session_state["sudo_mode"] is True:
-        st.warning("Sudo Mode Enabled - All destructive actions are disabled - Be careful!")
+        st.markdown("**MODE:** SUDO")
+        st.markdown("⚠️ *Use extreme caution while sudo mode is on. Sudo mode allows action that can break the server and cannot be resolved remotely!*")
     else:
-        st.text("Standard mode")
-    st.divider()
+        st.markdown("**MODE:** Standard")
+        st.markdown("*Although inherently destructive actions are disabled, still proceed with caution.*")
+    # st.divider()
 
-    st.text("If update 22 works, you will see this text.")
+    # Add some vertical space
+    with st.container(border=False, height=20):
+        pass
+
+    # Create the columns and rows (as a 4x4 grid)
+    column_1_row_1, column_2_row_1, column_3_row_1, column_4_row_1 = st.columns(4)
+    column_1_row_2, column_2_row_2, column_3_row_2, column_4_row_2 = st.columns(4)
+    column_1_row_3, column_2_row_3, column_3_row_3, column_4_row_3 = st.columns(4)
+    column_1_row_4, column_2_row_4, column_3_row_4, column_4_row_4 = st.columns(4)
 
     # Update server button
-    if st.button("Update Server", key="update_server", disabled=st.session_state["block_destructive_actions"]):
-        st.toast("Updating server...")
-        subprocess.Popen(["bash", "/home/admin/Documents/Becks-Website/assets/server_scripts/site-update.sh"])
-        # st.toast("Make sure to refresh in a minute!")
-        # st.toast("Button broken", icon="❌")
-        # st.toast("Use manual update script from server", icon="🖥️")
-        # os.system("~/Documents/update_becks_website.sh")
-    st.markdown("""<p style='color:orange;'>This button will only work on the server, not in a development environment.</p>""", unsafe_allow_html=True)
-    st.markdown("""<p style='color:red;'>If you've updated, added, or changed any secrets, you will have to add those manually.</p>""", unsafe_allow_html=True)
+    with column_1_row_1:
+        if st.button("Update Server", key="update_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+            st.toast("Starting update in 5 seconds. Make sure to refresh.")
+            time.sleep(5)
+            subprocess.Popen(["bash", "/home/admin/Documents/Becks-Website/assets/server_scripts/site-update.sh"])
+
+    # Reboot server button
+    with column_2_row_1:
+        if st.button("Reboot Server", key="reboot_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+            st.toast("Rebooting in 5 seconds. Make sure to refresh in a bit.")
+            time.sleep(5)
+            subprocess.Popen(["bash", "sudo reboot"])
+
+    # Shutdown server button
+    with column_3_row_1:
+        if st.button("Shutdown Server", key="shutdown_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+            st.toast("Shutting down in 5 seconds.")
+            time.sleep(5)
+            subprocess.Popen(["bash", "sudo shutdown -h now"])
+
+    # Delete secrets file
+    with column_4_row_1:
+        if st.button("Delete Secrets File", key="delete_secrets_file", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
+            st.toast("Deleting secrets file. Make sure to replace it manually.")
+            subprocess.Popen(["bash", "rm /home/admin/Documents/Becks-Website/.streamlit/secrets.toml"])
+
+    # Add some vertical space
+    with st.container(border=False, height=20):
+        pass
+
+    # Refresh page button (that does not logout the user)
+    st.button("Refresh Page", key="refresh_page_no_logout", use_container_width=True)

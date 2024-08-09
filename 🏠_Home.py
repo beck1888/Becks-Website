@@ -1,3 +1,8 @@
+# Use this command to run the app:
+"""
+streamlit run 🏠_Home.py
+"""
+
 # Import necessary libraries
 import streamlit as st
 import asset_director
