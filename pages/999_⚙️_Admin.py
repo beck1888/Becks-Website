@@ -94,7 +94,7 @@ if st.session_state["auth"] is True:
         if st.button("Shutdown Server", key="shutdown_server", disabled=st.session_state["block_destructive_actions"], use_container_width=True):
             st.toast("Shutting down in 5 seconds. The page will no longer be available.")
             time.sleep(5)
-            subprocess.Popen(["bash", "sudo shutdown -h now"])
+            subprocess.Popen(["bash", "pkill -f streamlit"])
 
     # Delete secrets file
     with column_4_row_1:
