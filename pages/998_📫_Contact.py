@@ -10,6 +10,12 @@ import time # For adding a delay to prevent spam
 # Configure assets
 src = asset_director.Asset("Contact", 998)
 
+## This page is not allowed to be locked because then it would be impossible to access it from the web but it's needed to report lock issues LMAOOOOO
+
+# Check if the page is locked
+pass # This page will never be locked
+
+
 # Configure the Streamlit app
 st.set_page_config(
     page_title=src.tab_title(),

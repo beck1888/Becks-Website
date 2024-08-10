@@ -26,6 +26,11 @@ st.set_page_config(
     layout="wide", # This page will be wide because the image needs room to display
     initial_sidebar_state="expanded")
 
+# Check if the page is locked
+if src.is_locked()[0]:
+        st.error(src.is_locked()[1])
+        st.stop()
+
 # Hide the Streamlit UI
 for config in src.clear_st_ui():
     st.markdown(config, unsafe_allow_html=True)

@@ -18,6 +18,11 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Check if the page is locked
+if src.is_locked()[0]:
+        st.error(src.is_locked()[1])
+        st.stop()
+
 # Hide the Streamlit UI
 for config in src.clear_st_ui():
     st.markdown(config, unsafe_allow_html=True)
@@ -67,6 +72,7 @@ def convert_date_format(date_str):
 
 # Page content
 st.title("Changelog")
+st.markdown("Only the most recent 30-ish commits will be shown. To see a full changelog, please visit the [GitHub repository](https://github.com/beck1888/Becks-Website/commits/main/).")
 st.divider()
 page_loader_button = st.empty()
 
@@ -99,7 +105,7 @@ if load_commits_go:
     bar_hold.empty()
 
     # Initialize the counter for the number of commits
-    commit_count = 0
+    # commit_count = 0
 
     # Display the changelog
     for commit in commits:
@@ -110,12 +116,12 @@ if load_commits_go:
             commit_date = commit['commit']['author']['date']
 
             # Get the commit number
-            commit_index = len(commits) - commit_count
-            commit_index = str(commit_index) # Convert to string for display
-            commit_index = f"Commit {commit_index} of {str(len(commits))}" # Add the number of commits into the index
+            # commit_index = len(commits) - commit_count
+            # commit_index = str(commit_index) # Convert to string for display
+            # commit_index = f"Commit {commit_index} of {str(len(commits))}" # Add the number of commits into the index
 
             # Increment the counter
-            commit_count += 1
+            # commit_count += 1
 
             # Capitalize the first letter of the commit message while leaving the rest as it is
             try:
@@ -128,10 +134,12 @@ if load_commits_go:
                 st.markdown(f"**{commit_message}**")
                 # st.text(f"Author: {commit_author}") # No need to display author because I'm the only contributor
                 st.markdown(f"*{convert_date_format(commit_date)}*")
-                st.markdown(f"{commit_index}          |          Commit ID: {commit['sha']}") # Display commit ID and index for reference in case there is an issue that needs to be reported so I can find which commit broke it
+                st.markdown(f"Commit ID: {commit['sha']}") # Display commit ID and index for reference in case there is an issue that needs to be reported so I can find which commit broke it
+                # st.markdown(f"{commit_index}          |          Commit ID: {commit['sha']}") # Display commit ID and index for reference in case there is an issue that needs to be reported so I can find which commit broke it
         except Exception as e:
             with st.container(border=True):
                 st.error("Error loading this commit")
+                # st.error(e)
 
     # # End of changelog
     # st.markdown("---")

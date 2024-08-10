@@ -1,0 +1,38 @@
+{
+    "global": {
+        "lock": false,
+        "reason": "Page blocked. The global lock is on."
+    },
+    "0": {
+        "lock": false,
+        "reason": ""
+    },
+    "1": {
+        "lock": false,
+        "reason": "The API is having issues, so this page is disabled while a fix is in progress."
+    },
+    "2": {
+        "lock": false,
+        "reason": "The API is having issues, so this page is disabled while a fix is in progress."
+    },
+    "3": {
+        "lock": true,
+        "reason": "Demo lock. This page will be available soon."
+    },
+    "100": {
+        "lock": false,
+        "reason": ""
+    },
+    "997": {
+        "lock": false,
+        "reason": ""
+    },
+    "998": {
+        "lock": false,
+        "reason": ""
+    },
+    "999": {
+        "lock": false,
+        "reason": ""
+    }
+}

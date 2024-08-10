@@ -20,6 +20,11 @@ st.set_page_config(page_title=src.tab_title(),
 for config in src.clear_st_ui():
     st.markdown(config, unsafe_allow_html=True)
 
+## This page is not allowed to be locked because then it would be impossible to access it from the web
+
+# Check if the page is locked
+pass # This page will never be locked
+
 # Set up session state
 if "auth" not in st.session_state:
     st.session_state["auth"] = False
@@ -149,3 +154,4 @@ if st.session_state["auth"] is True:
         st.markdown("- Clear the cache from time to time for better performance.")
         st.markdown("- Destructive commands will shutdown the server, and it can only be restarted manually or by another device on the same network.")
         st.markdown("- Install packages on the server's global environment by passing the --break-system-packages flag to pip install package.")
+        st.markdown("- For now, the lock file will have to be manually edited.")

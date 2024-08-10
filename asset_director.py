@@ -4,15 +4,43 @@ import subprocess # For cache management
 class Asset:
     """Initializes src = Asset()... because 'asset' is too similar to the 'assert' keyword in Python."""
 
-    def __init__(self, page_name: str, page_ID: int) -> None:
+    def __init__(self, page_name: str, page_ID: int) -> list:
         """
         Args:
             short_page_name (str): The shortened, proper name of the page. Used for the tab title.
-            page_ID (int): The ID of the page (based on asset folder). Will be used for locating assets.
+            page_ID (int): The ID of the page (based on asset folder). Will be used for locating assets and checking status.
+
+        Returns:
+            list: A boolean for if the page is allowed to be viewed and the an text message explaining why (if it's not). True means it's allowed, False means it's not.
         """
         self.page_name = page_name.title() # Capitalize the first letter of each word for proper tab titling
         self.page_ID = str(page_ID) # Force the conversion to a string
         self.asset_folder = f"assets/page_{str(page_ID)}"
+
+    def is_locked(self) -> bool:
+        """
+        Returns if the page is locked.
+        """
+        # Convert the page ID to a string to comply with json rules
+
+        page = str(self.page_ID)
+        # Load the JSON data
+        with open("assets/shared/locks.json", 'r') as f:
+            locks = json.load(f)
+
+        # First, check if the global lock is on
+        if locks['global']['lock']: # The global lock is on
+            return [True, locks['global']['reason']]
+
+        # Otherwise, check if the page exists in the lock file
+        if page in locks.keys():
+            # If the page exists, check if the lock is on
+            if locks[page]['lock']: # The lock is on
+                return [True, locks[page]['reason']]
+            else: # The lock is off
+                return [False, locks[page]['reason']]
+        else: # The page doesn't exist
+            return [True, "This page does not comply with the lock system and has been locked."]
 
     def clear_st_ui(self) -> str:
         """
