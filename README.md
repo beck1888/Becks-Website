@@ -6,6 +6,7 @@
 
 ## Table of Contents
 - [About](#about)
+- [AI Disclaimer](#ai-disclaimer)
 - [Technologies Used](#technologies-used)
 - [Support](#support)
 - [Installation](#installation)
@@ -21,6 +22,9 @@ If you want to help me with this, or anything else, I would really appreciate it
 
 ### Funding
 This project is completely self funded. Most of it was free (aka I already owned the hardware). My only real operating expense are API keys. Right now I have $5.00 loaded onto the OpenAI api set up to not auto-reload, so if errors with api keys come up that is probably the cause. I can fund it more, but I'm trying to keep costs low because this is a side project.
+
+## AI Disclaimer
+This project uses AI which is known to make mistakes. Please always double check important info. Any mistakes the AI makes are not the dev's responsibility.
 
 ## Technologies Used
 - [Streamlit](https://streamlit.io/)
@@ -98,8 +102,6 @@ By using this site, you agree to:
 - Refrain from sending automated requests to this page.
 - Not bypass security measures implemented on this page.
 - Respect the privacy of the host server and its users.
-
-Your usage of this site also means that you accept that I may ban you for misuse or any other reason without notice using any and all filtering tools available to me. You are hereby prohibited from attempting to circumvent any ban.
 
 Although I cannot make you report bugs, issues, and/ or vulnerabilities (especially leaked api keys) you find, **I kindly (and strongly) request that you share any and all of these you find with me ASAP.**
 

@@ -18,3 +18,4 @@
 - [ ] Get rid of Streamlit top bar UI
 - [ ] Rearrange the buttons in the admin portal to make more sense
 - [ ] Add a message viewer to the admin portal
+- [ ] Add a better thinking UI to the chat page

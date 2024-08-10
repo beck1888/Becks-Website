@@ -5,6 +5,9 @@ import openai # For using AI to ask questions about YouTube videos
 from youtube_transcript_api import YouTubeTranscriptApi # For getting the transcript
 from youtube_transcript_api.formatters import TextFormatter # For formatting the transcript
 from pytubefix import YouTube # Fixed library to download YouTube videos (titles only in this case) (PyTube Fix)
+import streamlit_lottie # For rendering the Lottie animation
+import json
+import time
 
 # Configure assets
 src = asset_director.Asset("YouTube Chat", 2)
@@ -33,6 +36,7 @@ if "phase" not in st.session_state:
 
 if "chat_history" not in st.session_state:
     st.session_state["chat_history"] = []
+    st.session_state.first_run = True
 
 # Define the function to get the transcript
 def get_transcription(url: str) -> str:
@@ -64,9 +68,10 @@ def ask_question(question: str, transcript: str, chat_history: list) -> str:
     client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
     # Create the prompt
+    extra_instructions = "Be very confident in your responses. Strongly avoid uncertainty or phrases like 'it appears'."
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "system", "content": f"Read this video transcript: {transcript}. Read the history of this chat you're having: {chat_history}. Now answer this following question (return ONLY your answer):"},
+        messages=[{"role": "system", "content": f"Keep this in mind in your responses: {extra_instructions}. Read this video transcript: {transcript}. Read the history of this chat you're having: {chat_history}. Now answer this following question (return ONLY your answer. Do not use markdown. Keep it short and helpful.):"},
                     {"role": "user", "content": question}],
         stream=False,
     ).choices[0].message.content
@@ -96,28 +101,49 @@ if st.session_state["phase"] == 0:
         st.session_state["url"] = url
         st.rerun()
 
+    # Prepare the Lottie animation (I'm bypassing the src manager because I don't want to restructure file but this is a bad habit)
+    with open("assets/page_1/loader.json", "r") as f:
+        st.session_state["lottie"] = json.load(f)
+
 # Get the transcript and title of the video
 if st.session_state["phase"] == 1:
-    with st.spinner("Fetching transcript..."):
-        st.session_state["transcript"] = get_transcription(st.session_state["url"])
-        st.session_state.video_title = get_video_title(st.session_state["url"])
+    st.markdown("# Watching video, hang tight!")
+    # Loading animation
+    streamlit_lottie.st_lottie(st.session_state["lottie"], speed=1, height=400, quality="high")
+
+    st.session_state["transcript"] = get_transcription(st.session_state["url"])
+    st.session_state.video_title = get_video_title(st.session_state["url"])
+
+    time.sleep(3) # Wait 3 seconds to avoid switching screens too quickly which can be visually annoying/ unpleasant
 
     st.session_state["phase"] = 2
     st.rerun()
 
 # Chat interface
 if st.session_state["phase"] == 2:
+
+    # If it's the first run, calculate the
+    if st.session_state.first_run:
+        st.session_state.first_run = False
+        first_run_data = {"user": None, 
+                        "ai": "I've watched the video you sent me, what's your question or questions?"}
+        st.session_state["chat_history"].append(first_run_data)
+
     st.markdown("## Chat about: [" + st.session_state.video_title + "](" + st.session_state["url"] + ")")
 
     msg = st.chat_input("Ask a question about the video")
 
     if msg is not None and msg != "":
-        st.session_state["chat_history"].append({
-            "user": msg,
-            "ai": ask_question(msg, st.session_state["transcript"], st.session_state["chat_history"])
-        })
+        with st.spinner("Thinking..."):
+            st.session_state["chat_history"].append({
+                "user": msg,
+                "ai": ask_question(msg, st.session_state["transcript"], st.session_state["chat_history"])
+            })
 
     # Display the chat 
     for message in st.session_state["chat_history"]:
-        st.chat_message("human").write(message["user"])
-        st.chat_message("ai").write(message["ai"])
+        if message["user"] is not None: # Skip blank messages
+            st.chat_message("human").write(message["user"])
+
+        if message["ai"] is not None:
+            st.chat_message("ai").write(message["ai"])
