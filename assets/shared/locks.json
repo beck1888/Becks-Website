@@ -16,7 +16,7 @@
         "reason": "The API is having issues, so this page is disabled while a fix is in progress."
     },
     "3": {
-        "lock": true,
+        "lock": false,
         "reason": "Demo lock. This page will be available soon."
     },
     "100": {
