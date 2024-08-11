@@ -37,6 +37,31 @@ if st.session_state["sudo_mode"] is True: # Sudo mode is on
 else: # Sudo mode is off
     st.session_state["block_destructive_actions"] = True # Will disable destructive action buttons
 
+# Functions
+def create_file_tree(start_path: str, skip_folders: list=None) -> str:
+    if skip_folders is None:
+        skip_folders = []
+    
+    tree = []
+    
+    for root, dirs, files in os.walk(start_path):
+        # Skip any folders in the skip_folders list
+        dirs[:] = [d for d in dirs if os.path.join(root, d) not in [os.path.join(start_path, sf) for sf in skip_folders]]
+        
+        level = root.replace(start_path, '').count(os.sep)
+        indent = ' ' * 4 * level + '├── ' if level > 0 else '' # '.\n'
+        tree.append(f"{indent}{os.path.basename(root)}")
+        
+        sub_indent = ' ' * 4 * (level + 1) + '└── '
+        for i, f in enumerate(files):
+            if i == len(files) - 1:
+                tree.append(f"{sub_indent}{f}")
+            else:
+                file_indent = ' ' * 4 * (level + 1) + '├── '
+                tree.append(f"{file_indent}{f}")
+
+    return "\n".join(tree)
+
 ## Page content
 st.title("Admin Portal")
 
@@ -145,13 +170,26 @@ if st.session_state["auth"] is True:
             st.session_state["sudo_mode"] = False
             st.rerun()
 
+    # Bottom columns
+    notes, file_tree = st.columns(2)
+
     # Notes
-    with st.container(border=True):
-        st.markdown("**Notes:**")
-        st.markdown("- Make sure to replace the secrets file manually.")
-        st.markdown("- Make sure to install new packages manually.")
-        st.markdown("- Clear cache will only work on the production server.")
-        st.markdown("- Clear the cache from time to time for better performance.")
-        st.markdown("- Destructive commands will shutdown the server, and it can only be restarted manually or by another device on the same network.")
-        st.markdown("- Install packages on the server's global environment by passing the --break-system-packages flag to pip install package.")
-        st.markdown("- For now, the lock file will have to be manually edited.")
+    with notes:
+        with st.container(border=True):
+            st.markdown("**Notes:**")
+            st.markdown("- Make sure to replace the secrets file manually.")
+            st.markdown("- Make sure to install new packages manually.")
+            st.markdown("- Clear cache will only work on the production server.")
+            st.markdown("- Clear the cache from time to time for better performance.")
+            st.markdown("- Destructive commands will shutdown the server, and it can only be restarted manually or by another device on the same network.")
+            st.markdown("- Install packages on the server's global environment by passing the --break-system-packages flag to pip install package.")
+            st.markdown("- For now, the lock file will have to be manually edited.")
+
+    # File tree
+    with file_tree:
+        # Display the file tree starting at the root directory of the Becks-Website folder
+        with st.container(border=True):
+            st.markdown("**File tree:**")
+            raw_tree = create_file_tree(".", [".venv", "__pycache__", ".git"])
+            st.text(raw_tree)
+            
