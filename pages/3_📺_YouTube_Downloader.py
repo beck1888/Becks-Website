@@ -119,13 +119,14 @@ if st.session_state["phase"] == 2:
     video_name = st.session_state.download_path.split("/")[-1]
 
     # Display a download button
-    st.download_button("📥 Download", video, file_name=video_name, use_container_width=True)
+    st.download_button("📥 Download", video, file_name=video_name, use_container_width=True, key="download_button_go")
+
 
     # Vertical space
     st.container(height=20, border=False)
 
-    # Back to Home button
-    if st.button("Back to Home", use_container_width=True, key="download_more"):
+    if st.button("Done", use_container_width=True, key="download_more"):
         os.remove(st.session_state.download_path) # Remove the downloaded file from the cache to save space
         st.session_state["phase"] = 0
         st.rerun()
+    st.markdown("*Please click 'Done' after you have downloaded the video to let our servers clear up space!*")
