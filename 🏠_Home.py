@@ -17,7 +17,7 @@ st.set_page_config(
     page_title=src.tab_title(),
     page_icon=src.favicon(),
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # Check if the page is locked
