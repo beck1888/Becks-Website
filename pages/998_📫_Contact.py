@@ -50,16 +50,20 @@ def get_sha256_hash(subject, message, date_and_time):
     return sha256_hash
 
 # Communication with Pushover
-def send_pushover_notification(subject, message, is_urgent):
+def send_pushover_notification(subject: str, message: str, is_urgent: bool, alert_type: str) -> None:
     if is_urgent:
         priority = 1
         sound = "Woop"
-        emoji = "⚠️ "
     else:
         priority = 0
         sound = "Message"
-        emoji = ""
 
+    if is_urgent and "bug" in alert_type:
+        title = "⚠️ URGENT BUG REPORT: " + subject.upper()
+    elif "bug" in alert_type:
+        title = "🪳 BUG REPORT: " + subject
+    else:
+        title = "📫 Message: " + subject
 
     conn = http.client.HTTPSConnection("api.pushover.net:443") # Pushover API endpoint
     conn.request("POST", "/1/messages.json",
@@ -68,8 +72,8 @@ def send_pushover_notification(subject, message, is_urgent):
         "user": st.secrets["PUSHOVER_USER_KEY"],
         "priority": priority,
         "sound": sound,
-        "title": emoji + "Server Alert: " + subject,
-        "message": "New message: " + message
+        "title": title,
+        "message": "Contact for message: " + message
     }), { "Content-type": "application/x-www-form-urlencoded" })
     conn.getresponse() # Sends the request
 
@@ -120,13 +124,13 @@ with st.form(key="contact_form", clear_on_submit=True):
             with open("contact_form_responses.json", "w") as f:
                 json.dump(responses, f, indent=4)
 
-            with st.spinner("Sending..."): # Discourage spamming the API
-                time.sleep(6) # Add a delay to prevent spamming the API
+            with st.spinner("Sending report. Please stay on this page until it's done."): # Discourage spamming the API
+                time.sleep(3) # Add a delay to prevent spamming the API
 
-            # Send Pushover notification
-            send_pushover_notification(subject, message, urgent)
+                # Send Pushover notification
+                send_pushover_notification(subject, message, urgent, message_type)
 
-            st.info(f"Response received! Thank you for contacting me, {name}!")
+            st.success(f"Response received! Thank you for contacting me, {name}!")
 
         else:
             st.error("Please fill out all required fields before submitting.")

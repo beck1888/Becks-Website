@@ -26,6 +26,10 @@ This project is completely self funded. Most of it was free (aka I already owned
 ### Credits
 Thank you, among others, to Lottie Files for the animations on this site!
 
+Thank you to the following news sites for their RSS feed (licensed under non-commercial use):
+
+- [The New York Times](https://www.nytimes.com/rss)
+
 ## AI Disclaimer
 This project uses AI which is known to make mistakes. Please always double check important info. Any mistakes the AI makes are not the dev's responsibility.
 
