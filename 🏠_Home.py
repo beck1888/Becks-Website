@@ -95,6 +95,7 @@ for service in services:
                     st.markdown(f'<a href="{link}" target="_self" allow_unsafe_html="true">{name}</a>', unsafe_allow_html=True)
 
 st.markdown("*NOTE: You can also use the sidebar to navigate!*")
+st.markdown("*NOTE: This site works best on a laptop or tablet. A mobile phone works, but it's best to use a laptop.*")
 
 st.divider()
 
