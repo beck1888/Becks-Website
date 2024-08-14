@@ -72,7 +72,7 @@ def convert_date_format(date_str):
 
 # Page content
 st.title("Changelog")
-st.markdown("Only the most recent 30-ish commits will be shown. To see a full changelog, please visit the [GitHub repository](https://github.com/beck1888/Becks-Website/commits/main/).")
+st.markdown("Only the most recent 30-ish commits (changes/ updates) will be shown. To see a full changelog, please visit the [GitHub repository](https://github.com/beck1888/Becks-Website/commits/main/).")
 st.divider()
 page_loader_button = st.empty()
 

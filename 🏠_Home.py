@@ -16,7 +16,7 @@ loading = src.under_construction()
 st.set_page_config(
     page_title=src.tab_title(),
     page_icon=src.favicon(),
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
@@ -37,8 +37,66 @@ for config in src.clear_st_ui():
 
 # st.divider()
 
-with open("README.md", "r") as f:
-    st.markdown(f.read())
+st.title("Beck's Website")
+
+st.markdown("Hi! Welcome to my website. This is a collection of tools I have built. Please combe back often because I'm always adding new stuff! Feel free to check them out, or read the README below for more info and the GitHub repo.")
+
+services = [
+    {
+        "AI": [
+            {"YouTube Summarizer": "http://beck.asuscomm.com/YouTube_Summarizer"},
+            {"Chat with an AI about a YouTube video": "http://beck.asuscomm.com/YouTube_Chat"},
+            {"Summarize the news": "http://beck.asuscomm.com/AI_News_Reader"}
+        ],
+        "Entertainment": [
+            {"Computer Science Memes": "http://beck.asuscomm.com/Comp_Sci_Memes"}
+        ],
+        "Tools": [
+            {"YouTube Video Downloader": "http://beck.asuscomm.com/YouTube_Downloader"}
+        ],
+        "Site info": [
+            {"Change Log": "http://beck.asuscomm.com/Changelog"},
+            {"Contact me/ feedback": "http://beck.asuscomm.com/Contact"}
+        ]
+    }
+]
+
+# Display the services
+
+a1, a2, a3 = st.columns(3)
+b1, b2, b3 = st.columns(3)
+for service in services:
+    with a1:
+        with st.container(border=True):
+            st.markdown("#### 🤖 AI Tools")
+            for tool in service["AI"]:
+                for name, link in tool.items():
+                    st.markdown(f'<a href="{link}" target="_self" allow_unsafe_html="true">{name}</a>', unsafe_allow_html=True)
+
+    with a2:
+        with st.container(border=True):
+            st.markdown("#### 🍿 Entertainment")
+            for tool in service["Entertainment"]:
+                for name, link in tool.items():
+                    st.markdown(f'<a href="{link}" target="_self" allow_unsafe_html="true">{name}</a>', unsafe_allow_html=True)
+
+    with a3:
+        with st.container(border=True):
+            st.markdown("#### 📦 Other Things")
+            for tool in service["Tools"]:
+                for name, link in tool.items():
+                    st.markdown(f'<a href="{link}" target="_self" allow_unsafe_html="true">{name}</a>', unsafe_allow_html=True)
+
+    with b1:
+        with st.container(border=True):
+            st.markdown("#### ℹ️ Site")
+            for tool in service["Site info"]:
+                for name, link in tool.items():
+                    st.markdown(f'<a href="{link}" target="_self" allow_unsafe_html="true">{name}</a>', unsafe_allow_html=True)
+
+st.markdown("*NOTE: You can also use the sidebar to navigate!*")
+
+st.divider()
 
 # # Render the Lottie animation
 # st.markdown(loading[0], unsafe_allow_html=True)
