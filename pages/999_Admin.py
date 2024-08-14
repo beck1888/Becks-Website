@@ -37,6 +37,9 @@ if st.session_state["sudo_mode"] is True: # Sudo mode is on
 else: # Sudo mode is off
     st.session_state["block_destructive_actions"] = True # Will disable destructive action buttons
 
+if "bash_history" not in st.session_state:
+    st.session_state["bash_history"] = []
+
 # Functions
 def create_file_tree(start_path: str, skip_folders: list=None) -> str:
     if skip_folders is None:
@@ -61,6 +64,27 @@ def create_file_tree(start_path: str, skip_folders: list=None) -> str:
                 tree.append(f"{file_indent}{f}")
 
     return "\n".join(tree)
+
+def validate_command(command: str) -> dict:
+    # Check for prohibited actions
+    blocked = ["sudo", "apt", "shutdown", "reboot", "rm"]
+
+    for b in blocked:
+        if b in command:
+            return {
+                "can_run": False,
+                "error": f"The action is not allowed: {b}"
+            }
+
+    return {
+        "can_run": True
+    }
+
+def run_command(command: str) -> str:
+    try:
+        return subprocess.check_output(command, shell=True).decode("utf-8")
+    except Exception as e:
+        return f"❌ {str(e)}"
 
 ## Page content
 st.title("Admin Portal")
@@ -175,7 +199,7 @@ if st.session_state["auth"] is True:
 
     # Notes
     with notes:
-        with st.container(border=True):
+        with st.expander("📝 Notes", expanded=False):
             st.markdown("**Notes:**")
             st.markdown("- Make sure to replace the secrets file manually.")
             st.markdown("- Make sure to install new packages manually.")
@@ -188,8 +212,32 @@ if st.session_state["auth"] is True:
     # File tree
     with file_tree:
         # Display the file tree starting at the root directory of the Becks-Website folder
-        with st.container(border=True):
+        with st.expander("📁 File tree", expanded=False):
             st.markdown("**File tree:**")
             raw_tree = create_file_tree(".", [".venv", "__pycache__", ".git"])
             st.text(raw_tree)
+
+    # Terminal
+    with st.container(border=True):
+        st.markdown("### Terminal")
+
+        command = st.chat_input("Run command:")
+
+        if command:
+            command_is_valid = validate_command(command)
+
+            if command_is_valid["can_run"]:
+                output = (run_command(command))
+            else:
+                output = command_is_valid["error"]
+
+            st.session_state.bash_history.append({
+                "user": command,
+                "rpi": output
+            })
+
+        for run in st.session_state.bash_history:
+            st.markdown(run["user"])
+            st.markdown("**➡** `" + run["rpi"] + "`")
+
             
