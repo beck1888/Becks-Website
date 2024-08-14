@@ -4,7 +4,8 @@ import asset_director # For asset management
 import subprocess # For running commands
 import time # For adding a delay so the toast messages can be read before running the action
 import http.client, urllib # For sending HTTP requests to Pushover
-import os
+import os # i forgot lmao
+import json # For reading inbox
 
 # Configure assets
 src = asset_director.Asset("Admin", 999)
@@ -196,6 +197,7 @@ if st.session_state["auth"] is True:
 
     # Bottom columns
     notes, file_tree = st.columns(2)
+    messages, tbd = st.columns(2)
 
     # Notes
     with notes:
@@ -216,6 +218,72 @@ if st.session_state["auth"] is True:
             st.markdown("**File tree:**")
             raw_tree = create_file_tree(".", [".venv", "__pycache__", ".git"])
             st.text(raw_tree)
+
+    # Messages
+    with messages:
+        with st.expander("📨 Mailbox", expanded=False):
+            with open("contact_form_responses.json", "r") as f:
+                inbox = json.load(f)
+
+            if len(inbox) == 0:
+                st.markdown("*No messages in the inbox.*")
+
+            for message in inbox:
+                if message["urgent"]:
+                    flag = "🚨 "
+                else:
+                    flag = ""
+                st.markdown(f"**{flag}{message['subject']}**")
+                st.markdown(f"*Sent on: {message['date_and_time']}*")
+                st.markdown(f"*From: {message['name']} ({message['email']})*")
+                st.markdown("**Message:** " + message["message"])
+                st.markdown(f"`{message['message_hash'][:6]}`")
+
+                st.markdown("---")
+
+    # Message controller
+    with tbd:
+        with st.expander("🎛️ Message controller", expanded=False):
+            # Load the messages from the JSON file
+            with open("contact_form_responses.json", "r") as f:
+                messages = json.load(f)
+
+            # Create a list of target hashes
+            targets = [message["message_hash"][:6] for message in messages]
+
+            # Create the form for selecting targets
+            with st.form(key="message_controller"):
+                target = st.multiselect("Target:", targets)
+                begin_archive = st.form_submit_button("Archive")
+                st.container(height=20, border=False)
+
+                if begin_archive:
+                    with st.spinner("Archiving messages..."):
+                        archive_path = "assets/page_admin/old.md"
+                        updated_inbox = []
+
+                        with open(archive_path, "a") as archive_file:
+                            for message in messages:
+                                if message["message_hash"][:6] in target:
+                                    # Append the message details to the archive
+                                    archive_file.write(f"## {message['subject']}\n")
+                                    archive_file.write(f"{message['date_and_time']} - {message['name']} - {message['email']}\n\n")
+                                    archive_file.write(f"{message['message']}\n\n")
+                                    archive_file.write(f"`{message['message_hash'][:6]}`\n\n")
+                                    archive_file.write("Was this message urgent? " + ("Yes" if message["urgent"] else "No") + "\n\n")
+                                    archive_file.write("---\n\n")
+                                else:
+                                    # Keep the message in the inbox if it doesn't match the target hash
+                                    updated_inbox.append(message)
+
+                        # Save the updated inbox back to the JSON file
+                        with open("contact_form_responses.json", "w") as f:
+                            json.dump(updated_inbox, f, indent=4)
+
+                        # st.success("Messages archived.")
+                        time.sleep(1.5)
+                        st.rerun()
+
 
     # Terminal
     with st.container(border=True):
