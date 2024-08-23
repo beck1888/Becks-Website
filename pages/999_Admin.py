@@ -197,7 +197,8 @@ if st.session_state["auth"] is True:
 
     # Bottom columns
     notes, file_tree = st.columns(2)
-    messages, tbd = st.columns(2)
+    messages, message_controller = st.columns(2)
+    error_log, visitor_log = st.columns(2)
 
     # Notes
     with notes:
@@ -242,7 +243,7 @@ if st.session_state["auth"] is True:
                 st.markdown("---")
 
     # Message controller
-    with tbd:
+    with message_controller:
         with st.expander("🎛️ Message controller", expanded=False):
             # Load the messages from the JSON file
             with open("contact_form_responses.json", "r") as f:
@@ -283,6 +284,40 @@ if st.session_state["auth"] is True:
                         # st.success("Messages archived.")
                         time.sleep(1.5)
                         st.rerun()
+
+
+    # Error log
+    with error_log:
+        with st.expander("🚨 Error log", expanded=False):
+            st.markdown("*Not implemented yet*")
+
+
+    # Visitor log
+    with visitor_log:
+        with st.expander("👥 Visitor log", expanded=False):
+            st.markdown("**WARNING:** This log is really long and may take a while to load. Are you sure you want to see it?")
+
+            vlcl1, vlcl2 = st.columns(2)
+
+            with vlcl1:
+                show_visitor_log = st.checkbox("Show visitor log")
+
+            with vlcl2:
+                delete_visitor_log = st.button("Delete visitor log", disabled=st.session_state.block_destructive_actions)
+
+            if show_visitor_log:
+                with open("visitor_log.txt", "r") as f:
+                    visitor_log = f.readlines()
+
+                for line in visitor_log:
+                    st.markdown(line)
+
+            if delete_visitor_log:
+                with open("visitor_log.txt", "w") as f:
+                    f.write("")
+                
+                st.toast("Dumped visitor log.")
+                st.rerun()
 
 
     # Terminal

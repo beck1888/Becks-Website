@@ -1,5 +1,12 @@
 import json # For loading the Lottie animation's JSON data and other JSON data
 import subprocess # For cache management
+import datetime
+
+def get_date_and_time() -> str:
+    """
+    Returns the current date and time in the format "YYYY-MM-DD HH:MM:SS".
+    """
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 class Asset:
     """Initializes src = Asset()... because 'asset' is too similar to the 'assert' keyword in Python."""
@@ -16,6 +23,10 @@ class Asset:
         self.page_name = page_name.title() # Capitalize the first letter of each word for proper tab titling
         self.page_ID = str(page_ID) # Force the conversion to a string
         self.asset_folder = f"assets/page_{str(page_ID)}"
+
+        # Log
+        with open("visitor_log.txt", "a") as f:
+            f.write(f"LOADED: {get_date_and_time()} - {self.page_name} - {self.page_ID}\n")
 
     def is_locked(self) -> bool:
         """
