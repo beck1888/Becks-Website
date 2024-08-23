@@ -126,6 +126,7 @@ for service in services:
 
 st.markdown("*NOTE: You can also use the sidebar to navigate!*")
 st.markdown("*NOTE: This site works best on a laptop or tablet. A mobile phone works, but it's best to use a laptop.*")
+st.markdown("**AI Disclaimer:** The services that use AI on this site may generate false and/ or offensive content. I am not responsible for any such content.")
 
 st.divider()
 

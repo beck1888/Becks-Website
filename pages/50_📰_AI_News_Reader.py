@@ -16,13 +16,13 @@ st.set_page_config(page_title=src.tab_title(),
     layout="centered",
     initial_sidebar_state="expanded")
 
-# # Hide the Streamlit UI
-# for config in src.clear_st_ui():
-#     st.markdown(config, unsafe_allow_html=True)
+# Hide the Streamlit UI
+for config in src.clear_st_ui():
+    st.markdown(config, unsafe_allow_html=True)
 
-# # Add a little bit of vertical space so the html h1 tag doesn't get cutoff
-# with st.container(border=False, height=10):
-#     pass
+# Add a little bit of vertical space so the html h1 tag doesn't get cutoff
+with st.container(border=False, height=10):
+    pass
 
 # Functions
 def get_news(site_rss_url):
@@ -48,7 +48,7 @@ def get_news(site_rss_url):
 
     return result
 
-def summarize_news(news: dict, style: str, use_emojis: bool) -> str:
+def summarize_news(news: dict, focus: str, use_emojis: bool, style: str, language: str) -> str:
     """
     Uses the OpenAI API to generate a summary of the news using the specified style. Returns the summary as a string using GitHub Flavored Markdown.
     
@@ -67,11 +67,16 @@ def summarize_news(news: dict, style: str, use_emojis: bool) -> str:
     # Craft flags
     if use_emojis:
         emoji_flag = "Use emojis to make the summary more engaging and clear."
+    else:
+        emoji_flag = ""
+
+    # Remove emojis from the language flag
+    language = language[1:].removeprefix(" ").removesuffix(" ")
 
     # Query the OpenAI API
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "system", "content": f"Create a {style} summary of the following news. {emoji_flag}"},
+        messages=[{"role": "system", "content": f"Create a {focus} summary of the following news in {language} with the style of {style}. {emoji_flag}"},
                   {"role": "user", "content": str(news)}], # Convert the dictionary to a string because OpenAI API only accepts strings for this parameter
         stream=False,
     ).choices[0].message.content
@@ -111,6 +116,7 @@ st.session_state["animation_data"] = src.fetch_local_json("loader")
 # Cannot be defined in an if block
 sites = {
     "The New York Times": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+    "CBS News": "https://www.cbsnews.com/latest/rss/main",
 }
 
 if st.session_state["phase"] == 0:
@@ -118,7 +124,9 @@ if st.session_state["phase"] == 0:
 
     with st.form("news_form"):
         st.session_state.site = st.selectbox("Select a site", options=list(sites.keys()), index=None, placeholder="News sites")
+        st.session_state.language = st.selectbox("Pick a language for the summary", options=["🇺🇸 English", "🇪🇸 Spanish", "🇫🇷 French", "🐈 Cat Noises", "🐶 Dog Noises", "🐷 Pig Latin"], index=0)
         st.session_state.focus = st.radio("Focus on", options=["Top Stories", "Upbeat"], index=None)
+        st.session_state.style = st.radio("Style", options=["Summary", "Short & Creative Story", "Newscast script"], index=None)
         st.session_state.use_emojis = st.checkbox("Use emojis", value=True)
 
         submit_button = st.form_submit_button(label="Read News")
@@ -132,6 +140,14 @@ if st.session_state["phase"] == 0:
                 st.error("Please select a focus before you continue!")
                 st.stop()
 
+            if st.session_state.style is None:
+                st.error("Please select a style before you continue!")
+                st.stop()
+
+            if st.session_state.language is None:
+                st.error("Please select a language before you continue!")
+                st.stop()
+
             st.session_state["phase"] = 1
             st.rerun()
 
@@ -141,7 +157,7 @@ if st.session_state["phase"] == 1:
     streamlit_lottie.st_lottie(st.session_state["animation_data"], speed=1, height=400, quality="high")
 
     st.session_state["news"] = get_news(sites[st.session_state.site])
-    st.session_state.summary = summarize_news(st.session_state["news"], st.session_state.focus, st.session_state.use_emojis)
+    st.session_state.summary = summarize_news(st.session_state["news"], st.session_state.focus, st.session_state.use_emojis, st.session_state.style, st.session_state.language)
 
     st.session_state["phase"] = 2
     st.rerun()
@@ -150,3 +166,8 @@ if st.session_state["phase"] == 2:
     st.markdown(get_timestamp())
     st.container(height=5, border=False)
     st.markdown(st.session_state.summary)
+
+st.container(height=20, border=False)
+st.divider()
+st.container(height=20, border=False)
+st.markdown("*Reload the page to read another news article or select a new style*")

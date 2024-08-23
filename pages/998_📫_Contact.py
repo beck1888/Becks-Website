@@ -90,7 +90,7 @@ with st.form(key="contact_form", clear_on_submit=True):
     st.markdown("**Your Message:**")
     message_placeholder_text = "Type your message here. Include as much info possible, including where you found the issue, how to reproduce it, commit hashes, and other info as relevant."
 
-    message_type = st.radio("Message Type (required)", options=["Bug Report", "Feature Request", "Other"], key="message_type", index=None, help="Selecting a message type helps me prioritize issues over requests.")
+    message_type = st.radio("Message Type (required)", options=["Bug Report", "Feature Request", "Incorrect or offensive AI content:", "Other"], key="message_type", index=None, help="Selecting a message type helps me prioritize issues over requests.")
 
     subject = st.text_input("Subject (required)", key="subject", placeholder="Short Subject Headline", help="Please write a few words about your issue to help me classify it. Keep this to a few words, and put the details in the main message box below.")
 
