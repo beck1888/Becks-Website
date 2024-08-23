@@ -22,3 +22,7 @@ __pycache__/
 # Ignore cache files but not folder structure
 # cache/memes/*
 # cache/YT/*
+
+# Ignore the visitor log
+visitor_log.txt
+visitor_log.txt

@@ -1,4 +1,4 @@
-# Use this command to run the app:
+# Use this command to run the app locally:
 """
 streamlit run 🏠_Home.py
 """
@@ -6,7 +6,7 @@ streamlit run 🏠_Home.py
 # Import necessary libraries
 import streamlit as st
 import asset_director
-import streamlit_lottie
+import os
 
 # Configure assets
 src = asset_director.Asset("Home", 0)
@@ -37,9 +37,39 @@ for config in src.clear_st_ui():
 
 # st.divider()
 
+# Header
 st.title("Beck's Website")
 
+# About
 st.markdown("Hi! Welcome to my website. This is a collection of tools I have built. Please combe back often because I'm always adding new stuff! Feel free to check them out, or read the README below for more info and the GitHub repo.")
+
+# Functions
+def count_python_lines(directory: str) -> int:
+    total_lines = 0
+    
+    for root, dirs, files in os.walk(directory):
+        # Exclude the 'venv' directory
+        if '.venv' in dirs:
+            dirs.remove('.venv')
+        
+        for file in files:
+            if file.endswith('.py'):
+                file_path = os.path.join(root, file)
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                    total_lines += len(lines)
+    
+    return total_lines
+
+def add_commas(number: int) -> str:
+    return "{:,}".format(number)
+
+# Show how many lines of code I have written
+with st.spinner("Reading codebase..."):
+    lines = count_python_lines(".")
+    lines = add_commas(lines)
+
+st.markdown(f"Current lines of code in project: {lines}")
 
 services = [
     {
