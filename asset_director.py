@@ -81,13 +81,14 @@ class Asset:
         with open("assets/shared/under_construction.json", 'r') as f:
             return ["<h1 style='text-align:center;'>Under Construction</h1>", json.load(f)]
         
-    def fetch_local_json(self, file_name: str) -> dict:
+    def fetch_local_json(self, file_name: str) -> json:
         """
         Returns the JSON data for the specified file name under the page's dedicated asset folder.
         """
         with open(f"{self.asset_folder}/{file_name.removesuffix('.json')}.json", 'r') as f:
             return json.load(f)
-        
+
+
     def clear_cache(self) -> None:
         """
         Clears all caches.

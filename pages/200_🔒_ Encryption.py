@@ -45,7 +45,7 @@ def rotate(text: str, key: str, direction: int) -> str:
         raise ValueError("Key cannot be empty.")
         
     # Check for leading zeros
-    if key.startswith("0"):
+    if str(key)[0] == "0":
         raise ValueError("Key cannot start with a leading zero.")
 
     # Convert the key to an integer
@@ -92,16 +92,78 @@ def rotate(text: str, key: str, direction: int) -> str:
 
     return encrypted
 
+def calculate_english_density(message: str) -> float:
+    # Convert the message to lowercase
+    message = message.lower() # The list is all lowercase
+
+    # Sanitize the message of all non-alphabetical characters
+    alphabet = "abcdefghijklmnopqrstuvwxyz" + " " # Don't forget about the space!!!
+    tmp = ""
+    for char in message:
+        if char in alphabet:
+            tmp += char
+    message = tmp # Overwrite the original message with the sanitized message
+
+    # Get all the top 10,000 English words
+    words = src.fetch_local_json("words.json")
+
+    is_english = 0
+
+    for word in message.split(" "):
+        if word in words:
+            is_english += 1
+
+    del words # Free up memory
+
+    density = is_english / len(message.split(" "))
+
+    return round(density, 3)
+
+def crack(encrypted: str) -> dict:
+    # Initialize
+    highest_score = 0
+    best_key = ""
+    best_guess_of_original_message = ""
+
+    # Create a list of all possible keys
+    all_possible_keys = []
+    for i in range(1, 27):
+        all_possible_keys.append(str(i))
+
+    # Loop through all possible keys
+    for key in all_possible_keys:
+        # Decrypt the message
+        decrypted = rotate(encrypted, str(key), -1)
+
+        # Calculate the score
+        score = calculate_english_density(decrypted)
+
+        # Debug
+        # print(f"Key: {key} | Score: {score}")
+
+        # Update the best key
+        if score > highest_score:
+            highest_score = score
+            best_key = key
+            best_guess_of_original_message = decrypted
+
+    return {
+        "key": best_key,
+        "message": best_guess_of_original_message,
+        "confidence": highest_score
+    }
+
+
 # Streamlit app entry point
 col1, col2 = st.columns(2)
 
 with col1:
     with st.form(key="encryption_controller", border=False):
-        with st.container(border=True, height=600):
+        with st.container(border=True, height=550):
             st.subheader("Encrypt or Decrypt:")
             st.divider()
 
-            text = st.text_area("Your message: ")
+            text = st.text_area("Your message: ", placeholder="Enter your message here...")
             key = st.text_input("Key:", placeholder="Such as 1234 or 9214")
             mode = st.radio("Mode:", ["Encrypt", "Decrypt"], None)
             direction = 1 if mode == "Encrypt" else -1 # 1 for encryption, -1 for decryption (single line if-else statement)
@@ -126,12 +188,33 @@ with col1:
                     st.error("Invalid key. Please try again.")
 
 with col2:
-    with st.container(border=True, height=600):
+    with st.container(border=True, height=550):
         st.subheader("Result:")
         st.divider()
 
-
         try:
-            st.markdown("*" + st.session_state["encrypted_or_decrypted_text"] + "*")
+            st.markdown(st.session_state["encrypted_or_decrypted_text"])
         except:
             st.markdown("*No text has been encrypted or decrypted yet. Use the form to the left and try again!*")
+
+# Message cracker
+with st.container(border=True):
+    st.subheader("Message Cracker")
+    st.divider()
+
+    with st.form(key="message_cracker", border=False):
+        message = st.text_area("Message: ", placeholder="Enter an encrypted message here...")
+
+        if st.form_submit_button("Crack"):
+            if not message:
+                st.error("Please enter some text before continuing!")
+                st.stop()
+
+            st.divider()
+
+            with st.spinner("Cracking..."):
+                original_message = crack(message)
+
+            st.markdown("**Best Guess of Original Message:** " + original_message["message"])
+            st.markdown("**Lowest Possible Key:** " + str(original_message["key"]))
+            st.markdown("**Confidence Score:** " + str(original_message["confidence"]))
