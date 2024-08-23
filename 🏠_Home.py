@@ -70,6 +70,8 @@ with st.spinner("Reading codebase..."):
     lines = add_commas(lines)
 
 st.markdown(f"Current lines of code in project: {lines}")
+# st.markdown("Current number of bugs in project: Cannot convert type 'str' to 'int'", unsafe_allow_html=False)
+# st.markdown("*Get it? Lol.*")
 
 services = [
     {
@@ -82,7 +84,8 @@ services = [
             {"Computer Science Memes": "http://beck.asuscomm.com/Comp_Sci_Memes"}
         ],
         "Tools": [
-            {"YouTube Video Downloader": "http://beck.asuscomm.com/YouTube_Downloader"}
+            {"YouTube Video Downloader": "http://beck.asuscomm.com/YouTube_Downloader"},
+            {"Encrypt/Decrypt Text": "http://beck.asuscomm.com/Encryption"},
         ],
         "Site info": [
             {"Change Log": "http://beck.asuscomm.com/Changelog"},
@@ -112,7 +115,7 @@ for service in services:
 
     with a3:
         with st.container(border=True):
-            st.markdown("#### 📦 Other Things")
+            st.markdown("#### 🔨 Tools")
             for tool in service["Tools"]:
                 for name, link in tool.items():
                     st.markdown(f'<a href="{link}" target="_self" allow_unsafe_html="true">{name}</a>', unsafe_allow_html=True)
