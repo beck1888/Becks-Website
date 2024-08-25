@@ -88,7 +88,7 @@ def summarize_news(news: dict, focus: str, use_emojis: bool, style: str, languag
     # Query the OpenAI API
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "system", "content": f"Create a summary of the following news in {language} with the style of {style} and, if possible, focus on {focus}. {emoji_flag}"},
+        messages=[{"role": "system", "content": f"Create a summary of the following news using the news headline, the summary, and your own knowledge in {language} with the style of {style} and, if possible, focus on {focus}. {emoji_flag}"},
                   {"role": "user", "content": str(news)}], # Convert the dictionary to a string because OpenAI API only accepts strings for this parameter
         stream=False,
     ).choices[0].message.content
