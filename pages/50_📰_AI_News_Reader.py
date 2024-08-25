@@ -187,7 +187,8 @@ if st.session_state["phase"] == 1:
     st.rerun()
 
 if st.session_state["phase"] == 2:
-    st.markdown(f"###{st.session_state.site} | {get_timestamp()}")
+    st.markdown(f"{st.session_state.site} | {get_timestamp()}")
+    st.divider()
     st.container(height=5, border=False)
     st.markdown(st.session_state.summary)
 
