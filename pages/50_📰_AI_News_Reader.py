@@ -128,7 +128,14 @@ st.session_state["animation_data"] = src.fetch_local_json("loader")
 # Cannot be defined in an if block
 sites = {
     "The New York Times": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+    "The Wall Street Journal": "https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
     "CBS News": "https://www.cbsnews.com/latest/rss/main",
+    "The Guardian": "https://www.theguardian.com/world/rss",
+    "CNBC": "https://www.cnbc.com/id/10000108/device/rss/rss.xml",
+    "The New York Post": "https://nypost.com/feed/",
+    "TechCrunch": "https://techcrunch.com/feed/",
+    "The Verge": "https://www.theverge.com/rss/index.xml",
+    "The United Nations": "https://news.un.org/feed/subscribe/en/news/all/rss.xml"
 }
 
 if st.session_state["phase"] == 0:
