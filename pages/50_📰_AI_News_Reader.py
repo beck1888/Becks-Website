@@ -25,7 +25,7 @@ with st.container(border=False, height=10):
     pass
 
 # Functions
-def get_news(site_rss_url):
+def get_news(site_rss_url, read_to):
     # Parse the feed
     feed = feedparser.parse(site_rss_url)
 
@@ -34,9 +34,21 @@ def get_news(site_rss_url):
     # GET Head
     result["section"] = feed.feed.title
 
+    # Find max entries
+    result["max_entries"] = len(feed.entries)
+
+    # Check how many entries are available
+    max_entries = len(feed.entries)
+
+    # Find how many entries to read
+    if read_to > max_entries:
+        read_to = max_entries
+    else:
+        read_to = read_to
+
     # GET Entries (5)
     index = 0
-    for entry in feed.entries[:5]:
+    for entry in feed.entries[:read_to]:
         index += 1
         result[f"story_{str(index)}"] = {
             "title": entry.title,
@@ -76,7 +88,7 @@ def summarize_news(news: dict, focus: str, use_emojis: bool, style: str, languag
     # Query the OpenAI API
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "system", "content": f"Create a {focus} summary of the following news in {language} with the style of {style}. {emoji_flag}"},
+        messages=[{"role": "system", "content": f"Create a summary of the following news in {language} with the style of {style} and, if possible, focus on {focus}. {emoji_flag}"},
                   {"role": "user", "content": str(news)}], # Convert the dictionary to a string because OpenAI API only accepts strings for this parameter
         stream=False,
     ).choices[0].message.content
@@ -125,8 +137,9 @@ if st.session_state["phase"] == 0:
     with st.form("news_form"):
         st.session_state.site = st.selectbox("Select a site", options=list(sites.keys()), index=None, placeholder="News sites")
         st.session_state.language = st.selectbox("Pick a language for the summary", options=["🇺🇸 English", "🇪🇸 Spanish", "🇫🇷 French", "🐈 Cat Noises", "🐶 Dog Noises", "🐷 Pig Latin"], index=0)
-        st.session_state.focus = st.radio("Focus on", options=["Top Stories", "Upbeat"], index=None)
-        st.session_state.style = st.radio("Style", options=["Summary", "Short & Creative Story", "Newscast script"], index=None)
+        st.session_state.max_stories = st.slider("How many headlines should I read?", min_value=1, max_value=10, value=5, step=1, help="Choose the number of headlines you want to read from the selected site. If that many headlines aren't available, the app will just read the max number of headlines available.")
+        st.session_state.focus = st.radio("Focus on", options=["Breaking News", "Upbeat", "Lifestyle", "Wars and Conflicts", "Tech"], index=None)
+        st.session_state.style = st.radio("Style", options=["News Anchor Script", "Shakespearian", "Joking", "Plain Summary"], index=None)
         st.session_state.use_emojis = st.checkbox("Use emojis", value=True)
 
         submit_button = st.form_submit_button(label="Read News")
@@ -148,6 +161,10 @@ if st.session_state["phase"] == 0:
                 st.error("Please select a language before you continue!")
                 st.stop()
 
+            if st.session_state.max_stories is None:
+                st.error("Please select a number of stories before you continue!")
+                st.stop()
+
             st.session_state["phase"] = 1
             st.rerun()
 
@@ -156,14 +173,14 @@ if st.session_state["phase"] == 1:
 
     streamlit_lottie.st_lottie(st.session_state["animation_data"], speed=1, height=400, quality="high")
 
-    st.session_state["news"] = get_news(sites[st.session_state.site])
+    st.session_state["news"] = get_news(sites[st.session_state.site], st.session_state.max_stories)
     st.session_state.summary = summarize_news(st.session_state["news"], st.session_state.focus, st.session_state.use_emojis, st.session_state.style, st.session_state.language)
 
     st.session_state["phase"] = 2
     st.rerun()
 
 if st.session_state["phase"] == 2:
-    st.markdown(get_timestamp())
+    st.markdown(f"###{st.session_state.site} | {get_timestamp()}")
     st.container(height=5, border=False)
     st.markdown(st.session_state.summary)
 
