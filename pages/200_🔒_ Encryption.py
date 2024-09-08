@@ -2,7 +2,6 @@
 import streamlit as st # Web framework
 import asset_director # For asset management
 
-
 # Configure assets
 src = asset_director.Asset("Encryption", 200)
 
