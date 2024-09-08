@@ -5,13 +5,17 @@
 ---
 
 ## Table of Contents
-- [About](#about)
-- [AI Disclaimer](#ai-disclaimer)
-- [Technologies Used](#technologies-used)
-- [Support](#support)
-- [Installation](#installation)
-- [License](#license)
-- [IMPORTANT COPYRIGHT NOTICE](#important-copyright-notice)
+- [README for Beck's Website](#readme-for-becks-website)
+  - [Table of Contents](#table-of-contents)
+  - [About](#about)
+    - [Funding](#funding)
+    - [Credits](#credits)
+  - [AI Disclaimer](#ai-disclaimer)
+  - [Technologies Used](#technologies-used)
+  - [Support](#support)
+  - [Installation](#installation)
+  - [License](#license)
+  - [IMPORTANT COPYRIGHT NOTICE](#important-copyright-notice)
 
 ## About
 This is my side project, hosted on a RaspberryPi that's currently sitting on my bedroom bookshelf. Please read the homepage of this app for full details.
@@ -111,6 +115,8 @@ By using this site, you agree to:
 - Respect the privacy of the host server and its users.
 
 Although I cannot make you report bugs, issues, and/ or vulnerabilities (especially leaked api keys) you find, **I kindly (and strongly) request that you share any and all of these you find with me ASAP.**
+
+Please refer to the License file for full details on modifying or using this code.
 
 **Important Notice:**
 
