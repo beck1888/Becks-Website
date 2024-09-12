@@ -24,6 +24,11 @@ if src.is_locked()[0]:
 for config in src.clear_st_ui():
     st.markdown(config, unsafe_allow_html=True)
 
+# # Clear the session state if this is the first run of this page to avoid uninitialized errors (because it carries over across pages)
+# if "page_1_first_run" not in st.session_state:
+#     st.session_state = {} # Clear the session state
+#     st.session_state["page_1_first_run"] = True # Set the flag to False to prevent this from running again
+
 if "phase" not in st.session_state:
     st.session_state["phase"] = 0
 

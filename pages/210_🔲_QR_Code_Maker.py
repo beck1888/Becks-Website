@@ -3,6 +3,8 @@ import streamlit as st # Web framework
 import asset_director # For asset management
 import segno
 import hashlib
+import streamlit_lottie as st_lottie
+import json
 
 # Configure assets
 src = asset_director.Asset("Encryption", 200)
@@ -20,6 +22,18 @@ for config in src.clear_st_ui():
 # Add a little bit of vertical space so the html h1 tag doesn't get cutoff
 with st.container(border=False, height=10):
     pass
+
+c1, c2, c3 = st.columns(3)
+
+with c2:
+    st.markdown(src.under_construction()[0], unsafe_allow_html=True)
+    st_lottie.st_lottie(src.under_construction()[1], speed=1, width=400, key="under_construction", quality="high")
+    st.stop()
+
+# Check if the page is locked
+if src.is_locked()[0]:
+        st.error(src.is_locked()[1])
+        st.stop()
 
 # Functions
 def sanitize_text(text: str) -> str:
