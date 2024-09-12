@@ -1,4 +1,5 @@
 # Import block
+import re # Regular expressions
 import streamlit as st # UI
 import random # Select a random meme
 import json # Read the master json file with all the memes
@@ -29,5 +30,37 @@ for config in src.clear_st_ui():
     st.markdown(config, unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
+# Configure session states
+if "phase220220" not in st.session_state:
+    st.session_state["phase220"] = 0
+
+# Functions
+def remove_markdown(text):
+    # Remove markdown syntax but keep list markers
+    text = re.sub(r'(\*\*|__)(.*?)\1', r'\2', text)  # Bold
+    text = re.sub(r'(\*|_)(.*?)\1', r'\2', text)  # Italics
+    text = re.sub(r'~~(.*?)~~', r'\1', text)  # Strikethrough
+    text = re.sub(r'`{1,2}([^`]+)`{1,2}', r'\1', text)  # Inline code
+    text = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', text)  # Links
+    text = re.sub(r'!\[([^\]]*)\]\([^\)]+\)', r'\1', text)  # Images
+    text = re.sub(r'^\s*#{1,6}\s*', '', text, flags=re.MULTILINE)  # Headers
+    text = re.sub(r'>\s*', '', text)  # Blockquotes
+    text = re.sub(r'\n{2,}', '\n\n', text)  # Remove extra newlines
+    return text
+
 # Main content
-pass
+st.title("Markdown Remover")
+with st.form("md_rmv"):
+    text = st.text_area("Enter some markdown text here:", height=300)
+    if st.form_submit_button("Remove Markdown"):
+        st.session_state["phase220"] = 1
+        # st.rerun()
+
+        
+        st.write("Here is the text with the markdown removed:")
+        with st.container(border=True):
+            st.write(remove_markdown(text))
+        
+        # if st.button("Try again", key="try_again", use_container_width=True):
+        #     st.session_state["phase220"] = 0
+        #     st.rerun()
