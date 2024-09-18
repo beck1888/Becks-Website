@@ -20,10 +20,14 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Ignore cache files but not folder structure
-# cache/memes/*
-# cache/YT/*
+cache/memes/*
+cache/YT/*
 cache/210/*
+cache/51/*
 
 # Ignore the visitor log
 visitor_log.txt
 visitor_log.txt
+
+# Ignore the saved podcasts because they are large
+assets/page_51/final_podcasts/*
