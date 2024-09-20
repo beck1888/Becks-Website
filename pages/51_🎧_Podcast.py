@@ -27,7 +27,7 @@ with st.container(border=False, height=10):
     pass
 
 # Functions
-def get_news(site_rss_url="https://rss.nytimes.com/services/xml/rss/nyt/US.xml", read_to=5):
+def get_news(site_rss_url, read_to=5):
     # Parse the feed
     feed = feedparser.parse(site_rss_url)
 
@@ -146,10 +146,10 @@ def _get_formatted_date():
 
     return f"{day_name}, {month_name} {day}, {year}"
 
-def complete_script(story_script):
+def complete_script(story_script, source):
     time_of_day = _get_time_of_day()
     # disclaimer = ""
-    header = f"Good {time_of_day} from the 5 things podcast, powered by The New York Times. My name is Quantum, your AI host, and here are the top 5 things you need to know for {_get_formatted_date()}."
+    header = f"Good {time_of_day} from the 5 things podcast, powered by {source}. My name is Quantum, your AI host, and here are the top 5 things you need to know for {_get_formatted_date()}."
     footer = "That's all for now. Come tomorrow to catch our next show. This is Quantum, signing off."
     full_script = f"{header}\n\n{story_script}\n\n{footer}"
     return full_script
@@ -227,6 +227,13 @@ def append_intro_and_outro_music(file_path):
 
 # UI / Main Code for Streamlit view
 with st.form(key="news_form", clear_on_submit=True, border=False):
+    choices_of_news_source = {
+        "The New York Times": "https://rss.nytimes.com/services/xml/rss/nyt/US.xml",
+        "CBS World News": "https://www.cbsnews.com/latest/rss/main",
+        "CBS Politics": "https://www.cbsnews.com/latest/rss/politics",
+    }
+
+    news_source = st.selectbox("Select a news source", choices_of_news_source.keys(), index=None)
     LANG = st.selectbox(
         "Select Language",
         [
@@ -248,7 +255,7 @@ with st.form(key="news_form", clear_on_submit=True, border=False):
             with st.status("Generating podcast...", expanded=True):
 
                 st.write("Getting news...")
-                news = get_news()
+                news = get_news(news_source)
 
                 st.write("Formatting news...")
                 formatted_news = format_news(news)
@@ -266,7 +273,7 @@ with st.form(key="news_form", clear_on_submit=True, border=False):
                 story_only_script = tidy_up_story(expanded_news)
 
                 st.write("Completing the script...")
-                full_script = complete_script(story_only_script)
+                full_script = complete_script(story_only_script, news_source)
 
                 # print(full_script)
                 st.write("Translating the script...")
